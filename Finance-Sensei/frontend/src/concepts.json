@@ -1,0 +1,1422 @@
+{
+  "greeting": {
+    "id": "greeting",
+    "name": "Greeting",
+    "difficulty": 1,
+    "category": "banking",
+    "keywords": ["hello", "hi", "hey", "good morning", "good afternoon", "good evening", "namaste", "yo", "hola"],
+    "related_topics": [],
+    "definition": "A friendly opener used to begin a conversation.",
+    "simple_explanation": "Hello! I am Finance Sensei. Ask me about money, banking, investing, inflation, loans, and more.",
+    "deep_explanation": "Conversation context initialized. I can explain concepts from beginner to advanced level, and also fetch live rates if API mode is enabled.",
+    "analogy": "A greeting is like opening the door before starting the lesson.",
+    "example": {
+      "scenario": "User says: Hello Sensei",
+      "calculation": "Response: Welcome! What finance topic do you want to learn today?",
+      "lesson": "A clear greeting helps start a focused conversation."
+    },
+    "pros": [
+      "Creates a friendly start",
+      "Lets users know what the assistant can do",
+      "Improves conversation flow"
+    ],
+    "cons": [
+      "No finance depth by itself"
+    ],
+    "quip": "Irasshaimase! What money topic shall we master today?"
+  },
+  "thanks": {
+    "id": "thanks",
+    "name": "Thanks",
+    "difficulty": 1,
+    "category": "banking",
+    "keywords": ["thanks", "thank you", "thx", "ty", "many thanks", "appreciate it", "thankyou"],
+    "related_topics": [],
+    "definition": "An expression of appreciation.",
+    "simple_explanation": "You are welcome! I am happy to help. Ask another finance question anytime.",
+    "deep_explanation": "Acknowledged. If you want, we can continue with a deeper explanation, analogy, or a practical example next.",
+    "analogy": "A thank-you is like bookmarking a good lesson before the next one.",
+    "example": {
+      "scenario": "User says: Thanks, that helped",
+      "calculation": "Response: Glad it helped. Want an example or a deep dive next?",
+      "lesson": "Positive feedback helps guide the next response style."
+    },
+    "pros": [
+      "Keeps conversation polite and warm",
+      "Improves assistant-user rapport"
+    ],
+    "cons": [
+      "Does not add technical content"
+    ],
+    "quip": "Always a pleasure. Knowledge compounds too!"
+  },
+  "goodbye": {
+    "id": "goodbye",
+    "name": "Goodbye",
+    "difficulty": 1,
+    "category": "banking",
+    "keywords": ["bye", "goodbye", "see you", "cya", "take care", "see ya", "later", "catch you later"],
+    "related_topics": [],
+    "definition": "A polite closing message at the end of a conversation.",
+    "simple_explanation": "Goodbye! Come back anytime to learn finance in a simple and practical way.",
+    "deep_explanation": "Session close acknowledged. You can return later for concept explanations, live rates, and strategy guidance.",
+    "analogy": "A goodbye is like closing your notebook after a productive class.",
+    "example": {
+      "scenario": "User says: Bye Sensei",
+      "calculation": "Response: See you soon. Keep learning and keep compounding knowledge.",
+      "lesson": "A friendly close improves user experience and retention."
+    },
+    "pros": [
+      "Ends conversation gracefully",
+      "Encourages users to return"
+    ],
+    "cons": [
+      "No direct financial analysis"
+    ],
+    "quip": "Sayonara for now. Your financial wisdom journey continues!"
+  },
+  "inflation": {
+    "id": "inflation",
+    "name": "Inflation",
+    "difficulty": 1,
+    "category": "macroeconomics",
+    "keywords": ["inflation", "price rise", "purchasing power", "cost of living", "cpi"],
+    "related_topics": ["interest_rate", "central_bank", "gold", "currency_exchange"],
+    "definition": "Inflation is the rate at which the general level of prices for goods and services rises over time, causing each unit of currency to buy fewer goods and services.",
+    "simple_explanation": "Imagine your favourite Rs.20 samosa costs Rs.25 next year. That price rise is inflation. When too much money chases too few goods, prices go up. Your money loses some of its buying power — Rs.100 today won't buy what Rs.100 bought 5 years ago.",
+    "deep_explanation": "Inflation is measured using indices like CPI (Consumer Price Index) and WPI (Wholesale Price Index). Demand-pull inflation occurs when aggregate demand exceeds supply. Cost-push inflation occurs when production costs rise (fuel, wages), forcing businesses to raise prices. Built-in inflation is the wage-price spiral — workers demand higher wages, firms raise prices to compensate. Central banks target 2-4% annual inflation as healthy. Hyperinflation (>50%/month) destroys economies — see Weimar Germany 1923 or Zimbabwe 2008. Deflation (negative inflation) sounds good but causes people to delay purchases, contracting the economy.",
+    "analogy": "Think of inflation like a slow leak in a tyre. You don't notice it day to day, but over a year your tyre is flat. Rs.1,00,000 in a savings account earning 3% interest while inflation is 6% means you're actually losing 3% of real purchasing power every year. The money number goes up, but what it can buy goes down.",
+    "example": {
+      "scenario": "You keep Rs.1,00,000 in cash under your mattress for 10 years. Inflation averages 6% per year.",
+      "calculation": "Real value after 10 years = 1,00,000 / (1.06^10) = Rs.55,839. Your Rs.1 lakh is now worth only Rs.55,839 in today's buying power. You lost Rs.44,161 by doing nothing.",
+      "lesson": "Idle cash is a guaranteed loss. This is why investing exists."
+    },
+    "pros": [
+      "Moderate inflation (2-4%) signals a growing, healthy economy",
+      "Encourages spending and investment over hoarding cash",
+      "Reduces real burden of fixed debts over time (good for borrowers)"
+    ],
+    "cons": [
+      "Erodes purchasing power of savings and fixed incomes",
+      "Creates uncertainty for long-term business planning",
+      "Hurts the poor disproportionately — essentials cost more"
+    ],
+    "quip": "Inflation is the tax nobody voted for — but everyone pays."
+  },
+  "interest_rate": {
+    "id": "interest_rate",
+    "name": "Interest Rate",
+    "difficulty": 1,
+    "category": "banking",
+    "keywords": ["interest rate", "rate of interest", "roi", "repo rate", "rbi rate", "bank rate"],
+    "related_topics": ["simple_interest", "compound_interest", "loans", "inflation", "central_bank"],
+    "definition": "An interest rate is the percentage a lender charges for borrowing money, or the percentage earned on savings or investments, expressed annually.",
+    "simple_explanation": "Interest rate is the price of money. When you borrow Rs.1,00,000 at 10% per year, you pay Rs.10,000 as rent for using that money. When you save Rs.1,00,000 at 7%, the bank pays you Rs.7,000 for letting them use your money.",
+    "deep_explanation": "The Reserve Bank of India (RBI) sets the Repo Rate — the rate at which it lends to commercial banks. When RBI raises repo rate, banks borrow at higher cost, pass it to customers as higher loan rates, people borrow less, spending falls, inflation cools. Real interest rate = Nominal rate - Inflation rate.",
+    "analogy": "Interest rates are like gravity for the economy. Low gravity (low rates) — money flies everywhere, people spend and invest freely. High gravity (high rates) — money is heavy to borrow, spending slows, inflation cools.",
+    "example": {
+      "scenario": "RBI raises repo rate from 6% to 6.5%. Your floating-rate home loan of Rs.50,00,000 at 20 years.",
+      "calculation": "At 8.5%: EMI = Rs.43,391. At 9%: EMI = Rs.44,986. Difference = Rs.1,595/month = Rs.19,140/year.",
+      "lesson": "A 0.5% rate change on a large loan over many years is a very large number."
+    },
+    "pros": [
+      "Tool for controlling inflation and economic growth",
+      "Higher savings rates reward patient savers",
+      "Signals economic health — markets read RBI decisions closely"
+    ],
+    "cons": [
+      "Rate hikes increase EMI burden for existing borrowers",
+      "Low rates punish conservative savers (FD returns shrink)",
+      "Rate changes take 6-18 months to fully affect the economy"
+    ],
+    "quip": "The repo rate is the RBI's volume knob for the entire economy."
+  },
+  "fixed_deposit": {
+    "id": "fixed_deposit",
+    "name": "Fixed Deposit (FD)",
+    "difficulty": 1,
+    "category": "banking",
+    "keywords": ["fd", "fixed deposit", "term deposit", "safe investment", "guaranteed return"],
+    "related_topics": ["simple_interest", "compound_interest", "inflation", "interest_rate"],
+    "definition": "A Fixed Deposit is a financial instrument provided by banks which offers investors a higher rate of interest than a regular savings account, until a given maturity date.",
+    "simple_explanation": "You give the bank a sum of money (say Rs.1 lakh) for a fixed time (say 3 years). In return, the bank guarantees you a fixed interest rate (say 7%). Your money is locked, and you can't withdraw it without a small penalty, but your return is 100% safe.",
+    "deep_explanation": "FDs are 'Term Deposits'. Interest can be cumulative (paid at end) or non-cumulative (monthly/quarterly payout). Senior citizens usually get an extra 0.50% interest. Under DICGC rules, each depositor in a bank is insured up to Rs.5,00,000 for both principal and interest amount if a bank fails.",
+    "analogy": "An FD is like a 'Contract' where you are the lender and the bank is the borrower. You agree not to ask for your money back for a set time, and the bank rewards your patience with a guaranteed 'rent' (interest).",
+    "example": {
+      "scenario": "Investing Rs.1,00,000 in a 5-year FD at 7% interest compounded quarterly.",
+      "calculation": "Final amount = 1,00,000 * (1 + 0.07/4)^(4*5) = Rs.1,41,478. Interest earned = Rs.41,478.",
+      "lesson": "Safety comes at the cost of liquidity. You know exactly what you will get, but you can't touch it easily."
+    },
+    "pros": [
+      "Guaranteed returns and highest level of capital safety",
+      "Flexible tenures ranging from 7 days to 10 years",
+      "Loan/Overdraft facility available against the FD amount"
+    ],
+    "cons": [
+      "Returns are fully taxable as per your income tax slab",
+      "Often fails to beat inflation after taxes are deducted",
+      "Premature withdrawal usually attracts a 0.5% to 1% penalty"
+    ],
+    "quip": "The FD is the 'old reliable' of Indian households—safe, boring, and sturdy."
+  },
+  "upi": {
+    "id": "upi",
+    "name": "UPI — Unified Payments Interface",
+    "difficulty": 1,
+    "category": "banking",
+    "keywords": ["upi", "qr code", "digital payment", "google pay", "phonepe", "vpa", "npci"],
+    "related_topics": ["banking", "central_bank", "currency_exchange"],
+    "definition": "UPI is a real-time payment system developed by NPCI that allows instant transfer of money between two bank accounts on a mobile platform without needing bank details.",
+    "simple_explanation": "Instead of asking for a 16-digit account number and an IFSC code, you just scan a QR code or use a simple ID like 'name@bank'. The money moves from your bank to the shopkeeper's bank instantly, 24/7, for free.",
+    "deep_explanation": "UPI works on top of IMPS technology but adds a 'Virtual Payment Address' (VPA) layer. It allows 'Push' (sending) and 'Pull' (requesting) money. Managed by NPCI (National Payments Corporation of India) and regulated by RBI. It has a limit of Rs.1-2 lakh per day depending on the bank.",
+    "analogy": "UPI is like a universal remote for all your bank accounts. You don't need to go to each bank's 'TV' to change the channel; one app on your phone controls the money flow for all of them instantly.",
+    "example": {
+      "scenario": "Buying a Rs.20 tea from a street vendor.",
+      "calculation": "Physical cash: Requires change, physical contact, risk of loss. UPI: 3 seconds to scan, 0 fees, exact amount transferred, digital record created for both.",
+      "lesson": "Frictionless payments increase the 'velocity of money' in an economy."
+    },
+    "pros": [
+      "Instant, 24/7, and mostly free for consumers",
+      "No need to share sensitive bank account/IFSC details",
+      "Interoperable — one app works for any bank account"
+    ],
+    "cons": [
+      "Internet/Server dependency — transactions can fail",
+      "High risk of social engineering scams (fraudulent collect requests)",
+      "Daily transaction limits can be restrictive for large purchases"
+    ],
+    "quip": "UPI turned India's mobile phones into the world's most advanced wallets."
+  },
+  "npa": {
+    "id": "npa",
+    "name": "NPA — Non-Performing Asset",
+    "difficulty": 3,
+    "category": "banking",
+    "keywords": ["npa", "bad loan", "default", "write-off", "insolvency", "stressed assets"],
+    "related_topics": ["loans", "banking", "central_bank", "credit_score"],
+    "definition": "An NPA is a loan or advance for which the principal or interest payment remained overdue for a period of 90 days or more.",
+    "simple_explanation": "When a person or business stops paying back their loan to the bank for 3 months, the bank stops counting it as 'income' and labels it a 'Bad Loan' or NPA. It's like a shopkeeper who gave goods on credit but the customer has stopped showing up to pay.",
+    "deep_explanation": "NPAs are classified into: Sub-standard (overdue < 12 months), Doubtful (overdue > 12 months), and Loss assets (uncollectible). High NPAs reduce a bank's ability to lend, as they must 'provision' (set aside) capital to cover potential losses, which hurts their profitability.",
+    "analogy": "A bank's loans are like fruit trees. NPAs are the trees that have stopped producing fruit but still take up space and water in the garden. If too many trees stop producing, the farmer (bank) goes hungry.",
+    "example": {
+      "scenario": "A bank has Rs.1,000 crores in total loans. Rs.100 crores have not been paid for over 90 days.",
+      "calculation": "Gross NPA = (100 / 1000) * 100 = 10%. If the bank sets aside Rs.40 crore to cover the risk, Net NPA = (60 / 960) * 100 = 6.25%.",
+      "lesson": "High NPA ratios are the first sign of a banking crisis."
+    },
+    "pros": [
+      "Forces banks to be transparent about their financial health",
+      "Triggers recovery actions like SARFAESI (seizing collateral)",
+      "Helps RBI identify and fix weak banks before they fail"
+    ],
+    "cons": [
+      "Reduces the bank's profit and its capacity to give new loans",
+      "High system-wide NPAs can slow down national economic growth",
+      "Ultimately taxpayers often pay for large corporate defaults (Bank recapitalization)"
+    ],
+    "quip": "NPAs are the 'trash' in a bank's balance sheet that hasn't been cleared out yet."
+  },
+  "sgb": {
+    "id": "sgb",
+    "name": "Sovereign Gold Bond (SGB)",
+    "difficulty": 2,
+    "category": "investing",
+    "keywords": ["sgb", "gold bond", "rbi gold", "tax free gold", "gold interest"],
+    "related_topics": ["gold", "investing", "central_bank", "inflation"],
+    "definition": "SGBs are government securities denominated in grams of gold. They are substitutes for holding physical gold, issued by the RBI on behalf of the Government of India.",
+    "simple_explanation": "You buy 'digital gold' from the government. If the price of gold goes up, your bond value goes up. On top of that, the government pays you 2.5% interest every year just for holding it. Plus, if you hold it for 8 years, you pay zero tax on the profit.",
+    "deep_explanation": "SGBs have an 8-year tenure with exit options after 5 years. They are tradable on the stock exchange. Minimum investment is 1 gram, maximum 4kg for individuals. Unlike physical gold, there are no making charges or storage risks. The interest is taxable, but Capital Gains at maturity are tax-exempt.",
+    "analogy": "Physical gold is like a gold bar in a box—it just sits there. SGB is like a 'Golden Hen'—not only does she grow bigger (gold price rise), but she also lays eggs (2.5% interest) every year.",
+    "example": {
+      "scenario": "Investing in 10 grams of SGB at Rs.6,000/gram.",
+      "calculation": "Cost = Rs.60,000. Annual Interest (2.5%) = Rs.1,500. After 8 years, if gold is Rs.10,000/gram: Maturity Value = Rs.1,00,000 + Total Interest = Rs.12,000. Total = Rs.1,12,000 (Zero tax on the 40k profit).",
+      "lesson": "SGB is mathematically superior to physical gold for long-term investors."
+    },
+    "pros": [
+      "Earns 2.5% annual interest on the initial investment",
+      "Zero capital gains tax if held until maturity (8 years)",
+      "No making charges, no storage risk, and guaranteed purity"
+    ],
+    "cons": [
+      "Long lock-in period of 8 years (though tradable on exchanges)",
+      "Interest received (2.5%) is taxable as per your income slab",
+      "Liquidity on stock exchanges can be low for early exit"
+    ],
+    "quip": "SGB is gold that pays you to own it."
+  },
+  "ppf": {
+    "id": "ppf",
+    "name": "Public Provident Fund (PPF)",
+    "difficulty": 2,
+    "category": "investing",
+    "keywords": ["ppf", "tax saving", "80c", "retirement", "long term saving"],
+    "related_topics": ["compound_interest", "inflation", "fixed_deposit"],
+    "definition": "PPF is a long-term statutory deposit scheme of the Central Government of India that offers tax-free returns and high safety.",
+    "simple_explanation": "A 15-year savings plan where you can put between Rs.500 and Rs.1.5 lakh every year. The government sets the interest rate (usually ~7%). The best part: you get a tax deduction when you invest, you pay no tax on the interest, and you pay no tax when you withdraw.",
+    "deep_explanation": "PPF falls under the EEE (Exempt-Exempt-Exempt) category. The interest is compounded annually but calculated monthly (based on balance between 5th and last day). It has a lock-in of 15 years, but partial withdrawals are allowed after 7 years. It cannot be attached by any court for any debt or liability.",
+    "analogy": "PPF is a 'Fortress' for your money. It takes a long time to build (15 years), but once inside, no one (not even debt collectors) can touch it, and it grows steadily without the 'Tax Monster' ever taking a bite.",
+    "example": {
+      "scenario": "Investing Rs.1,50,000 every year in PPF for 15 years at 7.1% interest.",
+      "calculation": "Total Invested = Rs.22,50,000. Maturity Value = ~Rs.40,68,000. Tax Saved (at 30% bracket) = Rs.45,000 per year = Rs.6.75 lakhs total.",
+      "lesson": "Consistency and tax-free compounding make PPF an unbeatable debt-instrument."
+    },
+    "pros": [
+      "EEE Tax Status: Tax-free investment, interest, and maturity",
+      "Back by Central Govt — zero risk of losing principal",
+      "Protection from attachment by courts or creditors"
+    ],
+    "cons": [
+      "Very long lock-in period of 15 years",
+      "Maximum investment limit of Rs.1.5 lakh per year",
+      "Interest rates are reviewed every quarter and can change"
+    ],
+    "quip": "PPF is the marathon of investing—slow start, but a glorious, tax-free finish."
+  },
+  "nps": {
+    "id": "nps",
+    "name": "National Pension System (NPS)",
+    "difficulty": 2,
+    "category": "investing",
+    "keywords": ["nps", "pension", "retirement", "80ccd", "tier 1", "tier 2", "pfrda"],
+    "related_topics": ["mutual_fund", "stock_market", "retirement_planning"],
+    "definition": "NPS is a voluntary, long-term retirement savings scheme designed to enable systematic savings during a subscriber's working life.",
+    "simple_explanation": "You put money into NPS, and it gets invested in a mix of stocks and bonds. You can't withdraw it until you are 60. At 60, you get 60% as a lump sum (tax-free) and the other 40% must be used to buy a 'Pension' (monthly income) for the rest of your life.",
+    "deep_explanation": "Regulated by PFRDA. Offers two accounts: Tier-I (restricted withdrawal, tax benefits) and Tier-II (voluntary savings, easy withdrawal). Allows choice between Active Choice (you decide mix of Equity/Debt) and Auto Choice (mix changes automatically with age). Extra tax deduction of Rs.50,000 under Section 80CCD(1B) over and above the Rs.1.5 lakh 80C limit.",
+    "analogy": "NPS is a 'Seedling' you plant for your 60-year-old self. You water it with small monthly amounts today. By the time you retire, it's a tree that provides both wood (lump sum) and fruit (monthly pension).",
+    "example": {
+      "scenario": "A 30-year-old investing Rs.10,000/month in NPS with 50% equity and 50% debt.",
+      "calculation": "Assuming 10% average return: At age 60, Corpus = ~Rs.2.2 Crores. Lump sum (60%) = Rs.1.3 Crores (Tax Free). Remaining 80 Lakhs gives a monthly pension of ~Rs.40,000-50,000.",
+      "lesson": "NPS is the cheapest way to get stock market exposure for retirement."
+    },
+    "pros": [
+      "Lowest fund management charges in the world (~0.01%)",
+      "Additional tax benefit of Rs.50,000 annually",
+      "Disciplined retirement tool—prevents early spending of corpus"
+    ],
+    "cons": [
+      "40% of maturity amount MUST be converted to an annuity (pension)",
+      "Strict withdrawal rules before the age of 60",
+      "The monthly pension (annuity) is taxable as per income slabs"
+    ],
+    "quip": "NPS is your 60-year-old self thanking your current self for the salary."
+  },
+  "reit": {
+    "id": "reit",
+    "name": "REITs — Real Estate Investment Trusts",
+    "difficulty": 3,
+    "category": "investing",
+    "keywords": ["reit", "real estate", "property investment", "dividends", "commercial property"],
+    "related_topics": ["mutual_fund", "stock_market", "dividends"],
+    "definition": "REITs are companies that own, operate, or finance income-producing real estate. Modeled after mutual funds, they allow individual investors to buy shares in commercial real estate portfolios.",
+    "simple_explanation": "You want to invest in a big IT Park or Mall but don't have Rs.500 crores. A REIT owns those buildings. You buy one unit of the REIT for maybe Rs.300. The rent collected from the companies in those buildings is distributed to you as 'Dividends'. You get real estate returns without the headache of buying a property.",
+    "deep_explanation": "In India, REITs must distribute 90% of their net cash flow to unit holders as dividends or interest. They primarily invest in finished, rent-yielding commercial properties (offices, malls). They are listed on stock exchanges and can be bought like shares through a demat account.",
+    "analogy": "A REIT is like a 'Digital Landlord'. You don't have to deal with tenants, broken pipes, or huge property taxes. You just own a tiny piece of a massive building and get your share of the rent deposited into your bank account automatically.",
+    "example": {
+      "scenario": "Investing Rs.1,00,000 in an Office REIT with a 7% dividend yield.",
+      "calculation": "Annual Dividend = Rs.7,000. If the value of the IT park properties increases by 5%, your Rs.1,00,000 investment also grows to Rs.1,05,000.",
+      "lesson": "REITs provide a mix of regular 'rent-like' income and capital growth."
+    },
+    "pros": [
+      "Allows real estate investment with very small amounts (~Rs.300)",
+      "High transparency and liquidity compared to physical property",
+      "Mandatory 90% profit distribution ensures regular income"
+    ],
+    "cons": [
+      "Market risk: REIT prices fluctuate on the stock exchange",
+      "Sensitive to interest rate changes (High rates = REITs become less attractive)",
+      "Commercial real estate can face high vacancy during economic downturns"
+    ],
+    "quip": "REITs let you be a landlord for the price of a pizza."
+  },
+  "etf": {
+    "id": "etf",
+    "name": "ETF — Exchange Traded Fund",
+    "difficulty": 2,
+    "category": "investing",
+    "keywords": ["etf", "index fund", "nifty beees", "gold beees", "passive investing", "stock exchange"],
+    "related_topics": ["mutual_fund", "stock_market", "index_fund"],
+    "definition": "An ETF is a type of pooled investment security that operates much like a mutual fund but is bought and sold on stock exchanges throughout the day, just like individual stocks.",
+    "simple_explanation": "An ETF is a basket of stocks that tracks an index (like Nifty 50). Unlike a mutual fund where you get the price only at the end of the day, an ETF can be bought or sold at any second during market hours. It's usually much cheaper (lower fees) than a normal mutual fund.",
+    "deep_explanation": "ETFs track a benchmark index and are passively managed, meaning there is no 'expert' picking stocks—it just copies the index. This results in an 'Expense Ratio' that is often 10 times lower than active mutual funds. Popular ETFs in India include Nifty BeES (tracks Nifty 50) and Gold BeES (tracks gold prices).",
+    "analogy": "A Mutual Fund is like a 'Set Menu' at a restaurant where the chef decides the price and you pay at the end. An ETF is like the 'Stock Market Cafe'—you see the price changing on a screen every second and can buy or sell your meal whenever you want.",
+    "example": {
+      "scenario": "Buying Nifty BeES ETF instead of an Active Mutual Fund.",
+      "calculation": "Active Fund Expense Ratio: 1.5%. ETF Expense Ratio: 0.05%. On a Rs.10 lakh portfolio over 20 years, the 1.45% difference saves you ~Rs.25 lakhs in fees.",
+      "lesson": "In the long run, lower costs often beat expert stock picking."
+    },
+    "pros": [
+      "Extremely low expense ratios (very cheap to own)",
+      "High liquidity — buy and sell instantly during market hours",
+      "No 'Fund Manager' risk — it simply tracks the market index"
+    ],
+    "cons": [
+      "Requires a Demat and Trading account to buy",
+      "Small 'tracking error' can cause it to slightly underperform the index",
+      "You have to pay brokerage and STT (taxes) on every buy/sell"
+    ],
+    "quip": "An ETF is the low-cost, high-speed version of a mutual fund."
+  },
+  "emergency_fund": {
+    "id": "emergency_fund",
+    "name": "Emergency Fund",
+    "difficulty": 1,
+    "category": "investing",
+    "keywords": ["emergency fund", "rainy day fund", "liquidity", "safety net", "contingency fund"],
+    "related_topics": ["personal_finance", "savings_account", "fixed_deposit"],
+    "definition": "An emergency fund is an amount of money set aside to cover large, unexpected expenses or financial emergencies, such as medical bills, urgent home repairs, or job loss.",
+    "simple_explanation": "Before you invest in stocks or gold, you need a 'Safety Net'. An emergency fund is 6 months of your monthly expenses kept in a very safe, easy-to-reach place (like a savings account). It's not for a new iPhone; it's for when 'life happens'.",
+    "deep_explanation": "Financial experts recommend 3 to 6 months of essential expenses. This should include: Rent/EMI, Food, Utilities, Insurance Premiums, and existing SIPs. This money should not be invested in risky assets like stocks; it should stay in liquid funds or FDs.",
+    "analogy": "An emergency fund is like the 'Spare Tyre' in your car. You hope you never have to use it, and it doesn't make the car go faster. But when you have a puncture (job loss/medical emergency), it's the only thing that keeps you from being stranded on the highway.",
+    "example": {
+      "scenario": "Your monthly expenses are Rs.40,000. You lose your job unexpectedly.",
+      "calculation": "Emergency Fund Needed = 40,000 * 6 = Rs.2,40,000. With this fund, you have 6 months to find a new job without any stress or debt.",
+      "lesson": "An emergency fund is not an investment; it is 'Stress Insurance'."
+    },
+    "pros": [
+      "Provides mental peace and prevents panic during crises",
+      "Prevents you from taking high-interest loans (credit cards) during trouble",
+      "Ensures your long-term investments (SIPs) aren't broken prematurely"
+    ],
+    "cons": [
+      "Low returns — since it stays in safe accounts, it barely beats inflation",
+      "Opportunity cost — that money could have earned more in the stock market",
+      "Discipline — it's tempting to use it for 'wants' instead of 'needs'"
+    ],
+    "quip": "An emergency fund turns a 'Crisis' into a 'Minor Inconvenience'."
+  },
+  "term_insurance": {
+    "id": "term_insurance",
+    "name": "Term Insurance",
+    "difficulty": 1,
+    "category": "investing",
+    "keywords": ["term insurance", "life insurance", "sum assured", "premium", "nominee", "death benefit"],
+    "related_topics": ["personal_finance", "risk_management"],
+    "definition": "Term insurance is the purest form of life insurance. It provides financial protection to the nominee if the insured person passes away during the policy term.",
+    "simple_explanation": "You pay a small amount (premium) every year. If you die during the policy term, your family gets a huge sum (say Rs.1 Crore) to pay off loans and live comfortably. If you survive, you get nothing back. It's not an investment; it's pure protection.",
+    "deep_explanation": "Unlike 'Endowment' or 'Money-back' plans, term insurance has no 'maturity benefit'. This is why it is extremely cheap. A 30-year-old can get a Rs.1 Crore cover for just Rs.10,000-12,000 per year. It should ideally cover 10-15 times your annual income plus all outstanding debts.",
+    "analogy": "Term insurance is like an 'Umbrella'. You buy it for the rain. If it doesn't rain, you don't feel bad that you didn't get wet. You're just happy the umbrella was there to protect you if it did rain. You don't expect the umbrella to give you money back if it stays sunny.",
+    "example": {
+      "scenario": "A 28-year-old takes a Rs.1 Crore term plan for 30 years.",
+      "calculation": "Annual Premium = Rs.10,000. Total paid over 30 years = Rs.3 Lakhs. Benefit if he dies = Rs.1,00,00,000. Ratio = 1:33 (huge leverage).",
+      "lesson": "Buy term insurance for protection; buy mutual funds for investment. Never mix the two."
+    },
+    "pros": [
+      "Highest possible life cover for the lowest possible premium",
+      "Tax benefits on premiums under Section 80C",
+      "Simple and easy to understand compared to complex ULIPs"
+    ],
+    "cons": [
+      "No 'survival benefit' — you get Rs.0 back if you live through the term",
+      "Premiums increase as you get older, so it's best to buy early",
+      "Strict medical checks and documentation required during application"
+    ],
+    "quip": "Term insurance is the greatest act of love you can leave in a folder."
+  },
+  "simple_interest": {
+    "id": "simple_interest",
+    "name": "Simple Interest",
+    "difficulty": 1,
+    "category": "banking",
+    "keywords": ["simple interest", "si", "flat rate", "linear interest"],
+    "related_topics": ["compound_interest", "loans", "emi", "interest_rate"],
+    "definition": "Simple Interest is interest calculated only on the original principal amount, never on accumulated interest. Formula: SI = (P × R × T) / 100.",
+    "simple_explanation": "You lend Rs.10,000 to a friend at 10% per year for 3 years. Every year he pays you exactly Rs.1,000 interest — same amount each year because it's always calculated on the original Rs.10,000. After 3 years you get back Rs.10,000 + Rs.3,000 = Rs.13,000. Simple, flat, predictable.",
+    "deep_explanation": "SI = PRT/100 where P = Principal, R = Rate per annum, T = Time in years. Used in: personal loans with flat rates, short-term borrowings.",
+    "analogy": "Simple interest is like renting a flat at a fixed monthly amount. Doesn't matter if you've paid half the rent in advance — next month is still the same rent.",
+    "example": {
+      "scenario": "Principal: Rs.50,000 | Rate: 8% per year | Time: 2.5 years",
+      "calculation": "SI = (50,000 × 8 × 2.5) / 100 = Rs.10,000. Total amount = Rs.60,000.",
+      "lesson": "SI grows in a straight line. Double the time = double the interest."
+    },
+    "pros": [
+      "Completely transparent — no hidden compounding effects",
+      "Easy to calculate mentally or on paper",
+      "Predictable total cost for borrowers"
+    ],
+    "cons": [
+      "Grows slowly — bad for wealth building as an investor",
+      "Flat-rate loans mislead borrowers about true cost",
+      "Lenders prefer compound interest — SI is rarer in practice"
+    ],
+    "quip": "Simple Interest is the only honest straight line in a world of curves."
+  },
+  "compound_interest": {
+    "id": "compound_interest",
+    "name": "Compound Interest",
+    "difficulty": 2,
+    "category": "banking",
+    "keywords": ["compound interest", "ci", "compounding", "interest on interest", "cagr"],
+    "related_topics": ["simple_interest", "sip", "emi", "inflation", "time_value_of_money"],
+    "definition": "Compound Interest is interest calculated on the principal AND on all previously accumulated interest — interest earning interest. Formula: A = P(1 + r/n)^(nt).",
+    "simple_explanation": "You put Rs.10,000 in a bank at 10% compounded annually. Year 1: earn Rs.1,000 → balance Rs.11,000. Year 2: 10% of Rs.11,000 = Rs.1,100 → balance Rs.12,100. Your interest is now earning interest.",
+    "deep_explanation": "A = P(1 + r/n)^(nt). More frequent compounding (monthly vs annually) = slightly more returns. Rule of 72: divide 72 by annual rate to get years to double.",
+    "analogy": "Compound interest is a snowball rolling downhill. At first it's tiny and slow. After halfway down, it's massive and unstoppable.",
+    "example": {
+      "scenario": "Two people invest Rs.1,00,000. Person A at 20 years old, Person B at 30 years old. Both at 12% CAGR. Both check at age 60.",
+      "calculation": "Person A: Rs.93 lakhs. Person B: Rs.30 lakhs. Difference = Rs.63 lakhs from starting 10 years earlier.",
+      "lesson": "Time is the most powerful variable in compounding — not the rate."
+    },
+    "pros": [
+      "Exponential growth — money multiplies dramatically over long periods",
+      "The single most powerful wealth-building force available",
+      "Rewards patience — the longer you wait, the faster it grows"
+    ],
+    "cons": [
+      "Works violently against you on high-interest debt (credit cards)",
+      "Effect is small and invisible in the short term — requires patience",
+      "Inflation compounds too, silently eroding real returns"
+    ],
+    "quip": "Einstein may or may not have called it the 8th wonder — but your future self definitely will."
+  },
+  "emi": {
+    "id": "emi",
+    "name": "EMI — Equated Monthly Instalment",
+    "difficulty": 2,
+    "category": "loans",
+    "keywords": ["emi", "equated monthly instalment", "installment", "monthly payment", "loan repayment"],
+    "related_topics": ["loans", "compound_interest", "interest_rate", "credit_score"],
+    "definition": "An EMI is a fixed monthly payment paid by a borrower to a lender on a set date, comprising both a principal repayment portion and an interest portion, until the loan is fully repaid.",
+    "simple_explanation": "You take a Rs.5,00,000 loan. Instead of returning it all at once, you pay a fixed amount (say Rs.10,000) every month for 5 years. Early EMIs are mostly interest. Late EMIs are mostly principal.",
+    "deep_explanation": "EMI = [P × r × (1+r)^n] / [(1+r)^n - 1]. Amortisation shows how early months are front-loaded with interest.",
+    "analogy": "EMI is like eating a pizza one slice at a time — but the restaurant charges you more for the slices you eat first.",
+    "example": {
+      "scenario": "Home Loan: Rs.40,00,000 | Rate: 8.5% | Tenure: 20 years",
+      "calculation": "EMI = Rs.34,677. Total paid over 20 years = Rs.83,22,480. Total interest = Rs.43,22,480.",
+      "lesson": "You borrow Rs.40 lakhs and pay back Rs.83 lakhs. The bank earns more than the loan itself."
+    },
+    "pros": [
+      "Makes large purchases (home, car) accessible through instalments",
+      "Fixed EMI enables precise monthly budgeting",
+      "Builds credit history when paid on time consistently"
+    ],
+    "cons": [
+      "Total repayment is significantly more than the borrowed amount",
+      "Missed EMIs attract penalties and damage credit score",
+      "Long tenure loans have massive interest components"
+    ],
+    "quip": "EMI stands for 'Every Month It hurts' — but also 'Eventually Makes It yours'."
+  },
+  "loans": {
+    "id": "loans",
+    "name": "Loans",
+    "difficulty": 1,
+    "category": "banking",
+    "keywords": ["loan", "borrowing", "credit", "debt", "home loan", "car loan", "personal loan"],
+    "related_topics": ["emi", "interest_rate", "compound_interest", "credit_score"],
+    "definition": "A loan is a sum of money borrowed from a lender that must be repaid over an agreed period with interest.",
+    "simple_explanation": "You need Rs.10 lakhs for a car but have Rs.2 lakhs. A bank lends you Rs.8 lakhs — you pay it back in instalments with interest. Secured loans (home) have collateral; unsecured (personal) don't.",
+    "deep_explanation": "LTV (Loan-to-Value) is the max % of an asset's value a bank will lend. Debt-to-Income ratio determines how much you can borrow safely.",
+    "analogy": "A loan is borrowing from your future self, with a middleman (the bank) who charges a fee for the introduction.",
+    "example": {
+      "scenario": "Personal loan (18%) vs Credit card loan (36%) for Rs.3,00,000.",
+      "calculation": "Personal loan interest = Rs.90,312. Credit card interest = Rs.1,87,728. Difference = Rs.97,416.",
+      "lesson": "Always find the cheapest borrowing option; rate matters enormously."
+    },
+    "pros": [
+      "Enables access to assets you couldn't afford upfront",
+      "Tax benefits on home loan interest and principal",
+      "Responsible borrowing builds credit history"
+    ],
+    "cons": [
+      "Total repayment always exceeds principal — interest is the real cost",
+      "Default consequences: credit score damage, asset seizure",
+      "Over-borrowing creates debt traps that are hard to escape"
+    ],
+    "quip": "A loan is a financial time machine — it brings future money to the present. The ticket price is interest."
+  },
+  "credit_card": {
+    "id": "credit_card",
+    "name": "Credit Card",
+    "difficulty": 1,
+    "category": "banking",
+    "keywords": ["credit card", "cashback", "rewards", "minimum payment", "credit limit"],
+    "related_topics": ["compound_interest", "credit_score", "loans", "emi"],
+    "definition": "A credit card is a payment instrument that allows you to borrow money from a bank up to a set limit, interest-free if repaid in full by the due date.",
+    "simple_explanation": "It's a 30-45 day interest-free loan. Pay the full bill, and you pay 0% interest. Pay only the 'minimum' (5%), and the rest grows at a massive 36-42% interest per year.",
+    "deep_explanation": "Grace periods only apply if previous balances are paid in full. Cash advances have no grace period and high fees.",
+    "analogy": "A credit card is a well-dressed shark. On the surface: rewards and airport lounges. Underneath: the highest interest rate in the market.",
+    "example": {
+      "scenario": "Rs.50,000 balance, paying only 5% (Rs.2,500) monthly at 3% interest per month.",
+      "calculation": "Interest = Rs.1,500. Principal reduced by only Rs.1,000. It will take over 3 years to clear.",
+      "lesson": "The minimum payment is designed to keep you in debt as long as possible."
+    },
+    "pros": [
+      "45 days of interest-free credit if paid in full",
+      "Cashback and rewards for disciplined users",
+      "Easier to dispute fraud than debit cards"
+    ],
+    "cons": [
+      "36-42% annual interest — highest rate in mainstream products",
+      "Minimum payment trap can keep you in debt for years",
+      "Encourages overspending beyond actual means"
+    ],
+    "quip": "A credit card is a hammer: it can build a house or break a window."
+  },
+  "credit_score": {
+    "id": "credit_score",
+    "name": "Credit Score (CIBIL)",
+    "difficulty": 2,
+    "category": "banking",
+    "keywords": ["credit score", "cibil", "credit rating", "history", "cibil report"],
+    "related_topics": ["loans", "credit_card", "emi", "interest_rate"],
+    "definition": "A credit score (300-900) represents your creditworthiness based on your history of repaying debts.",
+    "simple_explanation": "It's your financial report card. 750+ is an A grade. Banks check this before giving any loan. It's built by paying your bills on time.",
+    "deep_explanation": "Payment history (35%) and Credit utilization (30%) are the biggest factors. Keep usage under 30% of your limit.",
+    "analogy": "CIBIL score is your financial reputation. Good reputation = everyone lends happily at low cost. Bad reputation = nobody lends.",
+    "example": {
+      "scenario": "Rs.30,00,000 home loan for CIBIL 780 vs 650.",
+      "calculation": "780 Score (8.5%): Total interest Rs.32.4 lakhs. 650 Score (10%): Total interest Rs.39.4 lakhs. Difference = Rs.7 lakhs.",
+      "lesson": "Your credit score has a direct rupee value. Protect it."
+    },
+    "pros": [
+      "Good score unlocks lower interest rates",
+      "Faster loan approvals and negotiating power",
+      "Used by landlords and employers"
+    ],
+    "cons": [
+      "One missed EMI takes 12-24 months to repair",
+      "No score (newbies) can also face rejection",
+      "System doesn't account for medical emergencies"
+    ],
+    "quip": "Your CIBIL score is the number banks gossip about when you leave the room."
+  },
+  "sip": {
+    "id": "sip",
+    "name": "SIP — Systematic Investment Plan",
+    "difficulty": 2,
+    "category": "investing",
+    "keywords": ["sip", "mutual fund", "rupee cost averaging", "monthly investment"],
+    "related_topics": ["compound_interest", "mutual_fund", "inflation", "time_value_of_money"],
+    "definition": "A SIP is a method of investing a fixed amount in a mutual fund regularly, benefiting from rupee cost averaging.",
+    "simple_explanation": "Invest Rs.10,000 every month instead of a lump sum. You buy more units when prices are low and fewer when high, lowering your average cost over time.",
+    "deep_explanation": "Rupee Cost Averaging removes market timing risk. Long-term SIPs in equity funds historically beat almost all other asset classes.",
+    "analogy": "SIP is like filling a bucket with a slow, steady tap rather than dumping a barrel at once. The tap is boring, but it eventually fills the bucket.",
+    "example": {
+      "scenario": "Rs.10,000 monthly SIP for 20 years at 12% CAGR.",
+      "calculation": "Invested: Rs.24 lakhs. Future Value: ~Rs.1 crore. Wealth Created: Rs.76 lakhs.",
+      "lesson": "Patience and discipline create more wealth than market timing."
+    },
+    "pros": [
+      "Removes the need to time the market",
+      "Instils financial discipline through automation",
+      "Start with as little as Rs.500/month"
+    ],
+    "cons": [
+      "Returns are not guaranteed — carries market risk",
+      "Short-term SIPs (<5 years) may underperform",
+      "Stopping during crashes is the costliest mistake"
+    ],
+    "quip": "SIP is the antidote to 'I'll invest when the market is right' — which never comes."
+  },
+  "mutual_fund": {
+    "id": "mutual_fund",
+    "name": "Mutual Fund",
+    "difficulty": 2,
+    "category": "investing",
+    "keywords": ["mutual fund", "nav", "amc", "equity fund", "debt fund"],
+    "related_topics": ["sip", "compound_interest", "inflation", "stock_market"],
+    "definition": "A mutual fund is a pooled investment vehicle managed professionally, investing in stocks or bonds based on an objective.",
+    "simple_explanation": "10,000 people put in Rs.5,000. The fund manager now has Rs.5 crores to buy 50 different stocks. You own a tiny slice of that diversified portfolio.",
+    "deep_explanation": "NAV (Net Asset Value) is the per-unit price. Expense Ratio is the annual fee (0.1% to 2%). Passive funds (index) are cheaper than active funds.",
+    "analogy": "A mutual fund is like a food cooperative. A professional chef buys bulk ingredients and cooks a meal; you get a proportional share for a small fee.",
+    "example": {
+      "scenario": "Index Fund (12%) vs Fixed Deposit (7%) over 15 years.",
+      "calculation": "FD: Rs.10,000 becomes Rs.27,590. Nifty: Rs.10,000 becomes Rs.54,736.",
+      "lesson": "Long-term equity returns historically beat fixed income by a wide margin."
+    },
+    "pros": [
+      "Professional management and instant diversification",
+      "Regulated by SEBI for investor protection",
+      "Liquid — can withdraw money usually in 1-3 days"
+    ],
+    "cons": [
+      "Market risk — funds can lose value",
+      "Fees and exit loads reduce net returns",
+      "Many active funds fail to beat the index long-term"
+    ],
+    "quip": "A mutual fund is a financial potluck dinner where a professional does the cooking."
+  },
+  "stock_market": {
+    "id": "stock_market",
+    "name": "Stock Market",
+    "difficulty": 2,
+    "category": "investing",
+    "keywords": ["stocks", "shares", "nse", "bse", "nifty", "sensex"],
+    "related_topics": ["mutual_fund", "ipo", "inflation", "compound_interest"],
+    "definition": "A stock market is an exchange where shares of public companies are traded, allowing ownership in businesses.",
+    "simple_explanation": "Buy a share of TCS, and you own a tiny piece of TCS. If the company grows, your share value grows. NSE (Nifty 50) and BSE (Sensex) are the main Indian exchanges.",
+    "deep_explanation": "In the short term, prices move on fear/greed (volatility). In the long term, they track the company's earnings growth.",
+    "analogy": "The stock market is an auction hall where millions bid on company slices. Mr. Market is an emotional partner who offers you a different price every day.",
+    "example": {
+      "scenario": "Infosys IPO (1993) holding for 30 years.",
+      "calculation": "Rs.95 invested in 1993 became Rs.5,00,000+ by 2024 (5000x return).",
+      "lesson": "Generational wealth is built by holding quality businesses for decades."
+    },
+    "pros": [
+      "Historically highest long-term returns",
+      "Highly liquid asset class",
+      "Directly participate in national economic growth"
+    ],
+    "cons": [
+      "High short-term volatility (30-50% crashes are possible)",
+      "Requires high emotional discipline",
+      "Individual stock picking is hard for beginners"
+    ],
+    "quip": "The stock market transfers money from the impatient to the patient."
+  },
+  "ipo": {
+    "id": "ipo",
+    "name": "IPO — Initial Public Offering",
+    "difficulty": 2,
+    "category": "investing",
+    "keywords": ["ipo", "listing", "allotment", "gmp", "drhp"],
+    "related_topics": ["stock_market", "mutual_fund", "inflation"],
+    "definition": "An IPO is when a private company offers shares to the public for the first time to raise capital.",
+    "simple_explanation": "A company like Zomato 'goes public'. You apply for shares at the starting price. If demand is high, you might make a 'listing gain' on day one.",
+    "deep_explanation": "Retail investors can apply for up to Rs.2 lakhs. Allotment in oversubscribed IPOs is done via lottery.",
+    "analogy": "An IPO is a successful restaurant owner inviting the public to co-own 200 new outlets they want to build.",
+    "example": {
+      "scenario": "Zomato IPO (2021) listing gain.",
+      "calculation": "Issue price Rs.76, Listing price Rs.116. Gain = 52.6% in one day.",
+      "lesson": "Listing gains are excitement; company quality is for the long term."
+    },
+    "pros": [
+      "Opportunity to invest in companies early",
+      "Possibility of quick listing gains",
+      "Diversifies beyond the secondary market"
+    ],
+    "cons": [
+      "Allotment is never guaranteed (lottery system)",
+      "Limited public track record for the company",
+      "IPO pricing often favors the company owners over you"
+    ],
+    "quip": "IPO: It's Probably Overpriced just as often as it is a bargain."
+  },
+  "gold": {
+    "id": "gold",
+    "name": "Gold as an Asset",
+    "difficulty": 1,
+    "category": "commodities",
+    "keywords": ["gold", "sgb", "digital gold", "gold etf", "inflation hedge"],
+    "related_topics": ["inflation", "currency_exchange", "interest_rate"],
+    "definition": "Gold is a precious metal that acts as a store of value and an inflation hedge.",
+    "simple_explanation": "Unlike paper money, governments can't print gold. It holds its value when the economy is in trouble. Rs.10,000 of gold in 2000 buys roughly the same today.",
+    "deep_explanation": "Gold has a negative correlation with stocks; when stocks crash, gold usually rises. Forms include Physical, ETF, SGB, and Digital.",
+    "analogy": "Gold is financial insurance. You don't hope for a crash, but you're glad the insurance (gold) is there if it happens.",
+    "example": {
+      "scenario": "Gold price in India 2000 vs 2024.",
+      "calculation": "2000: Rs.4,400. 2024: Rs.72,000. Growth = 16x in 24 years (12% CAGR).",
+      "lesson": "Gold beats FDs and protects you when the Rupee weakens."
+    },
+    "pros": [
+      "Proven hedge against inflation and currency fall",
+      "Stables portfolio during market crashes",
+      "SGBs offer extra interest and tax benefits"
+    ],
+    "cons": [
+      "No regular income (dividends) except for SGBs",
+      "Physical gold has making charges and storage risks",
+      "Can have long periods of zero growth"
+    ],
+    "quip": "Gold does nothing for years, then saves you when everything is on fire."
+  },
+  "currency_exchange": {
+    "id": "currency_exchange",
+    "name": "Currency Exchange",
+    "difficulty": 2,
+    "category": "macroeconomics",
+    "keywords": ["forex", "usd inr", "dollar rupee", "exchange rate"],
+    "related_topics": ["inflation", "interest_rate", "gold", "central_bank"],
+    "definition": "Currency exchange is the conversion of one currency to another at fluctuating rates.",
+    "simple_explanation": "1 USD = Rs.84. If the Indian economy is strong, more people want Rupees, and the Rupee gets stronger. If we import too much, it gets weaker.",
+    "deep_explanation": "Influenced by interest rates, inflation, and RBI intervention. Weaker INR helps exporters (IT/Pharma) but makes oil expensive.",
+    "analogy": "Currency exchange is like buying mangoes. If Indian mangoes are popular, everyone needs Rupees to buy them — Rupee demand goes up.",
+    "example": {
+      "scenario": "IT company earns $1 million.",
+      "calculation": "At Rs.80: Rs.8 Cr revenue. At Rs.84: Rs.8.4 Cr revenue. Extra Rs.40 Lakhs profit just from exchange move.",
+      "lesson": "Exchange rates affect everyone, not just travelers."
+    },
+    "pros": [
+      "Enables global trade and investment",
+      "Weak Rupee helps Indian exporters",
+      "Forex reserves act as a national safety net"
+    ],
+    "cons": [
+      "Depreciation makes oil and electronics expensive",
+      "International investments can lose value if the currency drops",
+      "Volatile rates create business uncertainty"
+    ],
+    "quip": "The USD-INR rate is India's economic pulse."
+  },
+  "time_value_of_money": {
+    "id": "time_value_of_money",
+    "name": "Time Value of Money",
+    "difficulty": 3,
+    "category": "macroeconomics",
+    "keywords": ["tvm", "present value", "future value", "discounting"],
+    "related_topics": ["compound_interest", "inflation", "sip", "loans"],
+    "definition": "The principle that money available today is worth more than the same amount in the future.",
+    "simple_explanation": "Rs.10,000 today is better than Rs.10,000 next year because you can invest it today and earn interest. Future money is 'discounted' compared to today's money.",
+    "deep_explanation": "PV = FV / (1+r)^n. This is the foundation of all finance — from loan EMIs to stock valuation.",
+    "analogy": "TVM is why a bird in hand is worth two in the bush — quantified with math.",
+    "example": {
+      "scenario": "Win Rs.5 Lakhs today OR Rs.6 Lakhs in 3 years (10% rate).",
+      "calculation": "PV of Option B = Rs.4.5 Lakhs. Option A is better today.",
+      "lesson": "Always compare money at the same point in time using PV."
+    },
+    "pros": [
+      "Foundation for all rational financial decisions",
+      "Explains why starting early is the biggest advantage",
+      "Used to price every loan and business on earth"
+    ],
+    "cons": [
+      "Choice of 'rate' is subjective and changes results",
+      "Doesn't account for risk on its own",
+      "Can lead to short-term thinking if rates are too high"
+    ],
+    "quip": "A rupee today is a rupee-plus tomorrow."
+  },
+  "central_bank": {
+    "id": "central_bank",
+    "name": "Central Bank (RBI)",
+    "difficulty": 3,
+    "category": "macroeconomics",
+    "keywords": ["rbi", "monetary policy", "repo rate", "crr", "slr"],
+    "related_topics": ["inflation", "interest_rate", "currency_exchange", "loans"],
+    "definition": "The apex institution managing a nation's currency and money supply (Reserve Bank of India).",
+    "simple_explanation": "The 'Banker of all Banks'. It sets the rules and the Repo Rate. If inflation is high, RBI raises rates to cool the economy.",
+    "deep_explanation": "Tools include Repo Rate, CRR (cash banks must keep with RBI), and SLR (govt bonds banks must hold). Target inflation is 4%.",
+    "analogy": "RBI is the driver of the economy's accelerator and brake. Rates up = Brake. Rates down = Accelerator.",
+    "example": {
+      "scenario": "Post-COVID rate hikes (2022).",
+      "calculation": "Repo rate went from 4% to 6.5%. Home loan EMIs rose by ~Rs.8,000 for a 50L loan.",
+      "lesson": "RBI decisions affect every single loan and FD in India."
+    },
+    "pros": [
+      "Maintains price stability and prevents bank runs",
+      "Regulates the financial system to protect depositors",
+      "Manages national forex reserves"
+    ],
+    "cons": [
+      "Monetary policy has a long lag (6-18 months)",
+      "Rate hikes slow down economic growth",
+      "Can't fix food/oil supply shortages with interest rates"
+    ],
+    "quip": "When the RBI Governor speaks, every investor in India leans forward."
+  },
+  "gdp": {
+    "id": "gdp",
+    "name": "GDP (Gross Domestic Product)",
+    "difficulty": 2,
+    "category": "macroeconomics",
+    "keywords": ["gdp", "economic growth", "national income", "production", "economy size"],
+    "related_topics": ["inflation", "recession", "central_bank"],
+    "definition": "GDP is the total monetary value of all finished goods and services produced within a country's borders in a specific time period.",
+    "simple_explanation": "Think of GDP as the 'Annual Salary' of the entire country. If India's GDP grows by 7%, it means the country produced 7% more value than last year. It measures how fast the economic engine is running.",
+    "deep_explanation": "Real GDP is adjusted for inflation, while Nominal GDP is not. GDP = Consumption + Investment + Government Spending + (Exports - Imports). India is currently the 5th largest economy by nominal GDP and aims to be the 3rd largest.",
+    "analogy": "GDP is like the speedometer of a car. It doesn't tell you where the car is going or if the passengers are happy, but it tells you exactly how fast the engine is spinning.",
+    "example": {
+      "scenario": "A country produces 100 apples at Rs.10 each in Year 1. In Year 2, it produces 110 apples at Rs.12 each.",
+      "calculation": "Nominal GDP Year 2 = 110 * 12 = Rs.1,320. Real GDP (at Year 1 prices) = 110 * 10 = Rs.1,100. Real growth is 10%, even though the money value rose 32%.",
+      "lesson": "Always look at 'Real GDP' to see if the country actually produced more, or just raised prices."
+    },
+    "pros": [
+      "Universal standard to compare economic strength of nations",
+      "High GDP growth usually leads to more jobs and higher incomes",
+      "Helps governments plan taxes and spending"
+    ],
+    "cons": [
+      "Does not account for wealth inequality (rich vs poor gap)",
+      "Ignores environmental damage caused by production",
+      "Doesn't count 'unpaid' work like housework or caregiving"
+    ],
+    "quip": "GDP counts everything from ambulances to advertisements, but it doesn't count why we need them."
+  },
+  "fiscal_deficit": {
+    "id": "fiscal_deficit",
+    "name": "Fiscal Deficit",
+    "difficulty": 3,
+    "category": "macroeconomics",
+    "keywords": ["fiscal deficit", "government debt", "budget deficit", "borrowing"],
+    "related_topics": ["government_budget", "inflation", "central_bank"],
+    "definition": "Fiscal deficit is the shortfall in a government's income compared with its spending. It represents the total borrowing needed by the government.",
+    "simple_explanation": "When the government earns Rs.100 in taxes but spends Rs.105 on roads and subsidies, that extra Rs.5 is the Fiscal Deficit. The government has to borrow this money from the public or the RBI.",
+    "deep_explanation": "A high deficit can lead to inflation (if the gov prints money) or higher interest rates (as gov competes with private companies for loans). India's FRBM Act aims to keep this deficit around 3-4.5% of GDP for stability.",
+    "analogy": "Fiscal deficit is like a household using a Credit Card to pay for a new roof. It's okay if the roof helps you earn more later, but if you use it for daily groceries, you're headed for a debt trap.",
+    "example": {
+      "scenario": "Budget 2024: Govt plans to spend Rs.45 Lakh Crore but expects only Rs.27 Lakh Crore in tax/income.",
+      "calculation": "Fiscal Deficit = 45 - 27 = Rs.18 Lakh Crore. This must be covered by market borrowings.",
+      "lesson": "High deficits today mean higher taxes or higher interest payments for future generations."
+    },
+    "pros": [
+      "Allows gov to spend on infrastructure even when tax revenue is low",
+      "Can jumpstart a slow economy during a recession",
+      "Funds essential social welfare schemes"
+    ],
+    "cons": [
+      "Increases the national debt and interest payment burden",
+      "Can trigger inflation if not managed properly",
+      "Reduces money available for private businesses to borrow"
+    ],
+    "quip": "A fiscal deficit is the government's way of saying: 'Buy now, let the future taxpayers pay later.'"
+  },
+  "bear_bull_market": {
+    "id": "bear_bull_market",
+    "name": "Bear vs Bull Market",
+    "difficulty": 1,
+    "category": "investing",
+    "keywords": ["bull market", "bear market", "market cycle", "rally", "crash"],
+    "related_topics": ["stock_market", "recession"],
+    "definition": "A Bull market is a period of rising prices and optimism, while a Bear market is a period of falling prices (usually >20% drop) and pessimism.",
+    "simple_explanation": "A Bull charges ahead with its horns up (Prices UP). A Bear swipes down with its paws (Prices DOWN). Bull markets happen when the economy is growing; Bear markets happen when people are scared or a recession is coming.",
+    "deep_explanation": "Bull markets are characterized by high investor confidence and 'Greed'. Bear markets are driven by 'Fear'. Cyclical bears are short (months), while secular bears can last years. In India, the 2020 COVID crash was a flash Bear market, followed by a multi-year Bull run.",
+    "analogy": "A Bull market is like a sunny day at the beach—everyone is out and happy. A Bear market is a thunderstorm—people run for cover (sell stocks) and wait for the rain to stop.",
+    "example": {
+      "scenario": "The Nifty 50 falls from 22,000 to 17,000 over 4 months.",
+      "calculation": "Drop = (5,000 / 22,000) * 100 = 22.7%.",
+      "lesson": "Since the drop is more than 20%, we are officially in a Bear Market."
+    },
+    "pros": [
+      "Bull markets build wealth for millions of investors",
+      "Bear markets offer 'sales' where quality stocks are cheap",
+      "Cycles remove 'weak' companies from the system"
+    ],
+    "cons": [
+      "Bear markets cause panic and can destroy retirement savings",
+      "Bull markets often lead to 'bubbles' (overpricing)",
+      "Timing these cycles is almost impossible for humans"
+    ],
+    "quip": "Bulls make money, Bears make money, but Pigs (the greedy) get slaughtered."
+  },
+  "health_insurance": {
+    "id": "health_insurance",
+    "name": "Health Insurance",
+    "difficulty": 1,
+    "category": "investing",
+    "keywords": ["mediclaim", "health insurance", "premium", "deductible", "cashless"],
+    "related_topics": ["personal_finance", "emergency_fund"],
+    "definition": "A contract where an insurance company covers your medical expenses in exchange for a premium.",
+    "simple_explanation": "A single heart surgery or accident can cost Rs.10 lakhs and wipe out your savings. For Rs.15,000 a year, the insurance company promises to pay those big hospital bills for you. It's the most important 'Investment' you'll ever make.",
+    "deep_explanation": "Key terms: 'Co-pay' (you pay a % of bill), 'Waiting Period' (time before diseases like BP/Diabetes are covered), and 'No Claim Bonus' (increase in cover if you don't get sick). Always check 'Room Rent Limits' to avoid out-of-pocket costs.",
+    "analogy": "Health insurance is like a 'Shield' in a video game. You don't know when a monster (disease) will hit you, but the shield takes the damage so your 'Health Bar' (Savings) stays full.",
+    "example": {
+      "scenario": "Hospital bill of Rs.5,00,000. You have a policy with 10% co-pay.",
+      "calculation": "Insurance pays: Rs.4,50,000. You pay: Rs.50,000.",
+      "lesson": "Without insurance, you'd be Rs.5 Lakhs poorer. With it, you only lose 50k."
+    },
+    "pros": [
+      "Protects your life savings from medical inflation",
+      "Tax deduction under Section 80D (up to Rs.25k-50k)",
+      "Access to better hospitals and cashless treatments"
+    ],
+    "cons": [
+      "Premiums increase as you get older",
+      "Many 'hidden' exclusions (e.g., consumables like gloves/masks)",
+      "Claim rejection stress if documentation is poor"
+    ],
+    "quip": "The best time to buy health insurance was yesterday. The second best time is today."
+  },
+  "net_worth": {
+    "id": "net_worth",
+    "name": "Net Worth",
+    "difficulty": 1,
+    "category": "investing",
+    "keywords": ["net worth", "assets", "liabilities", "wealth"],
+    "related_topics": ["personal_finance", "loans"],
+    "definition": "Net worth is the total value of everything you own (assets) minus everything you owe (liabilities).",
+    "simple_explanation": "If you sold everything you have (house, gold, cash) and paid off all your loans (home loan, credit card), the money left in your hand is your Net Worth. It is the true measure of how 'rich' you are.",
+    "deep_explanation": "Assets include: Bank balance, Stocks, Real Estate, Gold, EPF. Liabilities include: Home Loan, Personal Loan, Credit Card debt. Someone earning Rs.2 Lakh/month but with huge loans might have a lower net worth than someone earning Rs.50k/month with no debt.",
+    "analogy": "Net worth is the 'Scoreboard' of your financial life. Your salary is just the 'Possession' time—it doesn't matter how much you have the ball if you don't put points on the board (save and invest).",
+    "example": {
+      "scenario": "You own a house worth 60L, Gold worth 5L, and Cash 2L. You owe 30L on a home loan.",
+      "calculation": "Total Assets = 67L. Total Liabilities = 30L. Net Worth = 37L.",
+      "lesson": "High income is not high wealth. Only Net Worth counts."
+    },
+    "pros": [
+      "The most accurate way to track financial progress",
+      "Helps you realize if you are 'Asset rich but Cash poor'",
+      "Motivates you to reduce debt and increase investments"
+    ],
+    "cons": [
+      "Can fluctuate daily if the stock market is volatile",
+      "Hard to calculate accurately for 'emotional' assets like family jewellery",
+      "Does not account for 'Human Capital' (your future earning power)"
+    ],
+    "quip": "Stop looking at your salary; start looking at your Net Worth."
+  },
+  "recurring_deposit": {
+    "id": "recurring_deposit",
+    "name": "Recurring Deposit (RD)",
+    "difficulty": 1,
+    "category": "banking",
+    "keywords": ["rd", "recurring deposit", "monthly saving", "savings"],
+    "related_topics": ["fixed_deposit", "interest_rate", "sip"],
+    "definition": "A Recurring Deposit is a service offered by banks where investors make regular monthly deposits and earn a fixed rate of interest over a specific tenure.",
+    "simple_explanation": "If a Fixed Deposit is a one-time 'lump sum' investment, an RD is its 'monthly installment' cousin. You tell the bank you will save Rs. 5,000 every month for 2 years. They give you a guaranteed interest rate, and at the end, you get your total savings plus interest.",
+    "deep_explanation": "RD interest is compounded quarterly in most Indian banks. Unlike SIPs (where returns fluctuate with the market), RD returns are locked in at the time of opening. TDS (Tax Deducted at Source) applies if the interest earned across all your RDs/FDs in a bank exceeds Rs. 40,000 (Rs. 50,000 for senior citizens) in a financial year.",
+    "analogy": "RD is like a 'piggy bank' that pays you to use it. You commit to putting in a fixed amount every month, and the bank rewards your discipline with a guaranteed bonus (interest) at the end.",
+    "example": {
+      "scenario": "You start an RD of Rs. 10,000 per month for 12 months at a 7% interest rate.",
+      "calculation": "Total Invested = Rs. 1,20,000. Interest Earned ≈ Rs. 4,600. Maturity Value ≈ Rs. 1,24,600.",
+      "lesson": "RDs are perfect for short-term goals, like saving for an annual insurance premium or a vacation, where you can't risk losing the principal."
+    },
+    "pros": [
+      "Instills a habit of regular monthly saving",
+      "Guaranteed returns regardless of stock market crashes",
+      "Lower entry barrier—can start with as little as Rs. 100 in some banks"
+    ],
+    "cons": [
+      "Interest is fully taxable as per your income tax slab",
+      "Premature withdrawal usually attracts a 1% interest penalty",
+      "Returns often struggle to beat inflation compared to equity"
+    ],
+    "quip": "An RD is a forced-discipline machine for your future self."
+  },
+  "money_transfer": {
+    "id": "money_transfer",
+    "name": "NEFT, RTGS & IMPS",
+    "difficulty": 2,
+    "category": "banking",
+    "keywords": ["neft", "rtgs", "imps", "wire transfer", "bank transfer"],
+    "related_topics": ["upi", "banking"],
+    "definition": "These are electronic systems used to transfer funds from one bank account to another within India.",
+    "simple_explanation": "NEFT is for general transfers (settled in batches), RTGS is for large amounts (above Rs. 2 Lakhs, settled instantly), and IMPS is for instant, 24/7 small-to-medium transfers.",
+    "deep_explanation": "NEFT (National Electronic Funds Transfer) works in half-hourly batches. RTGS (Real Time Gross Settlement) is the fastest possible way to move big money. IMPS (Immediate Payment Service) is managed by NPCI and is the backbone that allowed UPI to be built.",
+    "analogy": "NEFT is like the postal service (items collected and delivered in batches). RTGS is like a dedicated courier for VIPs (delivered immediately, but only for big items). IMPS is like a text message—instant and available any time.",
+    "example": {
+      "scenario": "You need to pay a builder Rs. 5 Lakhs for a house downpayment immediately.",
+      "calculation": "UPI limit is usually 1L. NEFT might take 30 mins. RTGS is the correct choice for instant settlement of this large value.",
+      "lesson": "Choose your transfer method based on the 'Speed' and 'Size' of the money."
+    },
+    "pros": [
+      "Safe and regulated by the RBI",
+      "No need for physical cheques or cash",
+      "Records are easily traceable for tax and legal purposes"
+    ],
+    "cons": [
+      "RTGS has a minimum limit of Rs. 2 Lakhs",
+      "NEFT is not truly 'instant' during system maintenance windows",
+      "Typing the wrong IFSC code or account number can lead to major headaches"
+    ],
+    "quip": "The 'Internet' of your bank account has three main lanes: Slow, Fast, and Heavy-Duty."
+  },
+  "kyc": {
+    "id": "kyc",
+    "name": "KYC (Know Your Customer)",
+    "difficulty": 1,
+    "category": "banking",
+    "keywords": ["kyc", "aadhaar", "pan", "verification", "aml"],
+    "related_topics": ["banking", "credit_score"],
+    "definition": "KYC is a mandatory process of verifying the identity and address of a customer before providing financial services.",
+    "simple_explanation": "Banks need to make sure you are who you say you are. This prevents identity theft and stops criminals from using the banking system for money laundering or illegal activities. It usually involves your PAN and Aadhaar.",
+    "deep_explanation": "RBI mandates KYC for all financial entities. It includes 'Identity Proof' and 'Address Proof'. CKYC (Central KYC) is a newer system where you do it once, and it’s valid across all financial institutions like mutual funds and insurance.",
+    "analogy": "KYC is like the 'Security Check' at an airport. It’s a bit of a hassle for the passenger, but it’s the only way to ensure the flight is safe for everyone on board.",
+    "example": {
+      "scenario": "Your bank account is 'frozen' suddenly and you can't withdraw money.",
+      "calculation": "Check: Did you update your address or let your documents expire? If yes, the bank is legally required to stop your transactions.",
+      "lesson": "KYC is not optional; it is the entry ticket to the modern economy."
+    },
+    "pros": [
+      "Reduces financial fraud and identity theft",
+      "Helps the government track and stop 'Black Money'",
+      "Allows for paperless 'e-KYC' for instant account opening"
+    ],
+    "cons": [
+      "Can be tedious for senior citizens or people with changing addresses",
+      "Privacy concerns regarding the sharing of Aadhaar data",
+      "Repeated requests for KYC from different banks can be frustrating"
+    ],
+    "quip": "KYC: Because the bank wants to know you're a person, not a laundromat for money."
+  },
+  "recession": {
+    "id": "recession",
+    "name": "Recession",
+    "difficulty": 2,
+    "category": "macroeconomics",
+    "keywords": ["recession", "economic downturn", "depression", "slowdown"],
+    "related_topics": ["gdp", "inflation", "bear_bull_market"],
+    "definition": "A recession is a significant decline in economic activity across the economy, lasting more than a few months, traditionally defined as two consecutive quarters of negative GDP growth.",
+    "simple_explanation": "A recession is when the economy 'shrinks' instead of growing. Businesses sell less, stop hiring, and people lose jobs. It's the 'Winter' season of the economy.",
+    "deep_explanation": "During a recession, the 'vicious cycle' kicks in: Fear leads to less spending → Less spending leads to lower business profits → Lower profits lead to layoffs → Layoffs lead to even less spending. Central banks usually cut interest rates to encourage borrowing and spending to end the recession.",
+    "analogy": "A recession is like the economy catching a bad flu. The 'body' (country) feels weak, the 'pulse' (GDP) slows down, and it needs medicine (rate cuts or gov spending) and rest to recover.",
+    "example": {
+      "scenario": "The Great Recession of 2008 or the COVID-19 lockdown impact in 2020.",
+      "calculation": "GDP growth goes from +6% to -23.9% (as seen in India in Q1 2020).",
+      "lesson": "Recessions are natural parts of the business cycle, but they require you to have an 'Emergency Fund' to survive the 'Winter'."
+    },
+    "pros": [
+      "Cools down 'overheated' economies and high inflation",
+      "Forces inefficient businesses to shut down or improve",
+      "Creates massive buying opportunities for long-term investors"
+    ],
+    "cons": [
+      "High unemployment and job insecurity",
+      "Stock markets usually crash or stagnate",
+      "Small businesses often struggle to survive due to lack of cash flow"
+    ],
+    "quip": "A recession is when your neighbor loses their job; a depression is when you lose yours."
+  },
+  "tax_basics": {
+    "id": "tax_basics",
+    "name": "Income Tax & GST Basics",
+    "difficulty": 2,
+    "category": "macroeconomics",
+    "keywords": ["income tax", "gst", "direct tax", "indirect tax", "tax slabs"],
+    "related_topics": ["government_budget", "fiscal_deficit"],
+    "definition": "Income Tax is a 'Direct Tax' paid by individuals on their earnings, while GST (Goods and Services Tax) is an 'Indirect Tax' paid by consumers when they buy products or services.",
+    "simple_explanation": "Income tax is the government taking a cut of the money you *make*. GST is the government taking a cut of the money you *spend*. Together, these are the main sources of income for the country.",
+    "deep_explanation": "India has a progressive Income Tax system (the more you earn, the higher % you pay). GST is a 'destination-based' tax with four main slabs: 5%, 12%, 18%, and 28%. GST replaced multiple old taxes like VAT and Service Tax to create 'One Nation, One Tax'.",
+    "analogy": "Income tax is like a 'Membership Fee' for living in a country. GST is like a 'Convenience Fee' added to every bill you pay for goods and services provided within that country.",
+    "example": {
+      "scenario": "You earn Rs. 10 Lakhs and buy a laptop worth Rs. 50,000.",
+      "calculation": "You might pay ~Rs. 50,000 in Income Tax (depending on the regime) and 18% GST (Rs. 9,000) on the laptop.",
+      "lesson": "You are taxed on both ends: making money and spending it. Smart financial planning helps you legally reduce the 'making' tax (Section 80C, etc.)."
+    },
+    "pros": [
+      "Funds infrastructure like roads, railways, and defense",
+      "Reduces wealth inequality by taxing the rich more",
+      "GST simplifies the tax structure for businesses"
+    ],
+    "cons": [
+      "High taxes can reduce the incentive to work or spend",
+      "Complex rules often require hiring a professional (CA)",
+      "Indirect taxes (GST) affect the poor and rich equally on basic goods"
+    ],
+    "quip": "In this world, nothing is certain except death and taxes — and taxes happen more often."
+  },
+  "elss": {
+    "id": "elss",
+    "name": "ELSS (Tax Saving Mutual Fund)",
+    "difficulty": 2,
+    "category": "investing",
+    "keywords": ["elss", "tax saver", "80c", "lock-in", "equity linked savings scheme"],
+    "related_topics": ["mutual_fund", "ppf", "nps", "stock_market"],
+    "definition": "ELSS is a type of equity mutual fund that allows investors to claim a tax deduction of up to Rs. 1.5 lakh under Section 80C of the Income Tax Act.",
+    "simple_explanation": "ELSS is the only mutual fund that helps you save tax. It has a mandatory 'lock-in' period of 3 years—the shortest among all 80C options (like PPF's 15 years). You invest in the stock market to grow wealth while simultaneously reducing your taxable income.",
+    "deep_explanation": "ELSS funds must invest at least 80% of their assets in equity. While the lock-in is 3 years, you should ideally stay for 5-7 years to ride out market cycles. Dividends and capital gains (above Rs. 1.25L) are taxed as LTCG at 12.5%. You can invest via SIP or Lump sum.",
+    "analogy": "ELSS is like a 'Two-for-One' sale. You buy a ticket to the stock market (wealth creation), and the government gives you a discount on your income tax (tax saving) as a bonus for keeping your money there for at least 3 years.",
+    "example": {
+      "scenario": "You are in the 30% tax bracket and invest Rs. 1,50,000 in an ELSS fund.",
+      "calculation": "Immediate Tax Saving = 30% of 1,50,000 = Rs. 45,000. If the fund grows at 12% for 3 years, your Rs. 1.5L becomes ~Rs. 2.1L.",
+      "lesson": "The tax saved is like an 'instant return' on your investment before the market even moves."
+    },
+    "pros": [
+      "Shortest lock-in period (3 years) among all tax-saving (80C) options",
+      "Higher potential returns compared to PPF, FDs, or NSC",
+      "Encourages disciplined long-term equity investing"
+    ],
+    "cons": [
+      "Market risk — unlike PPF, your principal is not guaranteed",
+      "Cannot withdraw money before 3 years under any circumstances",
+      "LTCG tax applies on gains above the exemption limit"
+    ],
+    "quip": "ELSS: Come for the tax saving, stay for the wealth creation."
+  },
+  "index_funds": {
+    "id": "index_funds",
+    "name": "Index Funds (Passive Investing)",
+    "difficulty": 2,
+    "category": "investing",
+    "keywords": ["index fund", "passive fund", "nifty 50", "sensex", "low cost fund", "tracking error"],
+    "related_topics": ["mutual_fund", "etf", "stock_market"],
+    "definition": "An index fund is a type of mutual fund with a portfolio constructed to match or track the components of a financial market index, such as the Nifty 50.",
+    "simple_explanation": "Instead of a fund manager trying to 'guess' which stocks will win, an index fund simply buys all the stocks in an index (like the top 50 companies in India). It doesn't try to beat the market; it *is* the market. Because there's no expensive 'expert' picking stocks, the fees are very low.",
+    "deep_explanation": "Index funds follow a 'Passive' strategy. They have a lower 'Expense Ratio' than 'Active' funds. The main risk is 'Tracking Error'—the slight difference between the index's return and the fund's return due to cash holdings or expenses.",
+    "analogy": "An Active Fund is like hiring a personal shopper to find the best clothes for you (expensive fees). An Index Fund is like buying the 'Mannequin's Outfit'—you just take exactly what the store (the index) says is the standard, for a much lower price.",
+    "example": {
+      "scenario": "Comparing an Active Fund (2% fee) vs an Index Fund (0.2% fee) over 20 years.",
+      "calculation": "On a Rs. 10 Lakh investment at 12% growth: Active Fund ends at ~Rs. 67L. Index Fund ends at ~Rs. 91L. The 1.8% fee difference cost you Rs. 24 Lakhs!",
+      "lesson": "In investing, you often get what you *don't* pay for. Lower fees = higher final wealth."
+    },
+    "pros": [
+      "Very low management fees (Expense Ratio)",
+      "Removes 'Manager Risk'—no human bias or bad stock picks",
+      "Historically, most active funds fail to beat the index over 10+ years"
+    ],
+    "cons": [
+      "Will never 'beat' the market—you get the average market return",
+      "No protection during crashes—it falls exactly as much as the index",
+      "Tracking error can lead to slightly lower returns than the actual index"
+    ],
+    "quip": "Don't look for the needle in the haystack; just buy the whole haystack."
+  },
+  "pe_ratio": {
+    "id": "pe_ratio",
+    "name": "P/E Ratio (Price-to-Earnings)",
+    "difficulty": 3,
+    "category": "investing",
+    "keywords": ["pe ratio", "valuation", "expensive stocks", "cheap stocks", "earnings", "fundamental analysis"],
+    "related_topics": ["stock_market", "market_cap"],
+    "definition": "The P/E ratio is the ratio for valuing a company that measures its current share price relative to its per-share earnings (EPS).",
+    "simple_explanation": "The P/E ratio tells you how much investors are willing to pay for every Rs. 1 of profit the company makes. A P/E of 20 means you are paying Rs. 20 to 'buy' Rs. 1 of annual profit. It helps you see if a stock is 'Expensive' or 'Cheap'.",
+    "deep_explanation": "Formula: Market Price per Share / Earnings Per Share (EPS). A high P/E usually means investors expect high future growth. A low P/E could mean the stock is undervalued or that the company is in trouble (Value Trap). Always compare P/E with industry peers or the company's own historical average.",
+    "analogy": "Think of P/E like the 'Price per Square Foot' in real estate. A house in South Mumbai has a high price per sq ft because people expect high value/prestige. A house in a remote village has a low price per sq ft. P/E tells you if you're paying 'Mumbai prices' or 'Village prices' for a stock.",
+    "example": {
+      "scenario": "Stock A price: Rs. 1000, Profit per share: Rs. 50. Stock B price: Rs. 500, Profit per share: Rs. 10.",
+      "calculation": "Stock A P/E = 1000/50 = 20. Stock B P/E = 500/10 = 50.",
+      "lesson": "Stock A is 'cheaper' even though its price (1000) is higher, because you pay less for every rupee of profit it makes."
+    },
+    "pros": [
+      "Quickest way to compare valuations of companies in the same sector",
+      "Helps identify 'overheated' stocks during market bubbles",
+      "Indicates market sentiment and growth expectations"
+    ],
+    "cons": [
+      "Can be misleading for companies with no profits (like startups)",
+      "Does not account for debt levels or future growth rates (use PEG for that)",
+      "Historical P/E (Trailing) doesn't tell you what will happen tomorrow"
+    ],
+    "quip": "P/E is the price tag of a company's future."
+  },
+  "market_cap": {
+    "id": "market_cap",
+    "name": "Market Cap (Large, Mid, Small)",
+    "difficulty": 2,
+    "category": "investing",
+    "keywords": ["market cap", "large cap", "mid cap", "small cap", "valuation", "company size"],
+    "related_topics": ["stock_market", "mutual_fund", "portfolio_diversification"],
+    "definition": "Market Capitalization is the total value of a company's shares. Large-cap (1-100), Mid-cap (101-250), and Small-cap (251+) are ranks based on this value.",
+    "simple_explanation": "Market Cap is the 'Size' of the company. Large-caps (like Reliance/HDFC) are giants—stable but grow slowly. Small-caps are like startups—risky but can grow very fast. Mid-caps are the 'teenagers' in between.",
+    "deep_explanation": "SEBI Classification: 1st-100th company = Large Cap. 101st-250th = Mid Cap. 251st onwards = Small Cap. Large-caps are liquid and safer. Small-caps are volatile and can crash 50-70% in a bear market but offer 'multi-bagger' potential.",
+    "analogy": "Large-caps are like huge 'Ships' (stable in storms, slow to turn). Small-caps are like 'Jet-skis' (very fast and exciting, but can flip over in a small wave). Mid-caps are 'Motorboats' trying to become Ships.",
+    "example": {
+      "scenario": "A market crash happens.",
+      "calculation": "Large Cap stock might fall 10%. Small Cap stock might fall 40%.",
+      "lesson": "You need a mix. Large caps provide the 'Floor' (safety), Small caps provide the 'Ceiling' (growth)."
+    },
+    "pros": [
+      "Helps in proper asset allocation based on risk appetite",
+      "Large-caps often pay steady dividends",
+      "Small-caps provide the best chance for high long-term returns"
+    ],
+    "cons": [
+      "Small-caps have low liquidity (hard to sell during a crash)",
+      "Large-caps may underperform the index in a raging bull market",
+      "Classification changes every 6 months, affecting mutual fund holdings"
+    ],
+    "quip": "Large caps help you sleep; Small caps help you eat (better)."
+  },
+  "portfolio_diversification": {
+    "id": "portfolio_diversification",
+    "name": "Portfolio Diversification",
+    "difficulty": 2,
+    "category": "investing",
+    "keywords": ["diversification", "asset allocation", "rebalancing", "risk management", "correlation"],
+    "related_topics": ["stock_market", "gold", "fixed_deposit", "reit"],
+    "definition": "Diversification is the process of investing in a variety of assets to reduce the overall risk of a portfolio.",
+    "simple_explanation": "Don't put all your eggs in one basket. If you only own Tech stocks and the Tech sector crashes, you lose everything. If you own some Tech, some Bank stocks, some Gold, and some FDs, a crash in one won't destroy your entire wealth.",
+    "deep_explanation": "The goal is to pick 'Uncorrelated' assets—things that don't move in the same direction at the same time. When stocks go down, Gold often goes up. This 'smooths out' your returns over time. True diversification is across sectors, market caps, and asset classes.",
+    "analogy": "Diversification is like a 'Balanced Diet'. If you only eat pizza (High growth/High risk), you'll get sick eventually. You need proteins (Large caps), vitamins (Gold/Debt), and a bit of spice (Small caps) to stay healthy long-term.",
+    "example": {
+      "scenario": "Portfolio A: 100% Equity. Portfolio B: 60% Equity, 30% Debt, 10% Gold.",
+      "calculation": "In a 20% market crash: Portfolio A loses 20%. Portfolio B might only lose 8% because Gold and Debt stayed stable or rose.",
+      "lesson": "Diversification is the only 'Free Lunch' in finance—it reduces risk without necessarily reducing returns."
+    },
+    "pros": [
+      "Reduces the impact of volatility on your mental health",
+      "Protects against the total failure of a single company or sector",
+      "Ensures you always have some 'winning' asset in your portfolio"
+    ],
+    "cons": [
+      "Over-diversification (owning 100+ stocks) can lead to 'average' returns",
+      "Managing many different investments can be complicated",
+      "You will always feel bad about the one part of your portfolio that is down"
+    ],
+    "quip": "Diversification is your financial seatbelt."
+  },
+  "derivatives": {
+    "id": "derivatives",
+    "name": "Futures & Options (F&O)",
+    "difficulty": 3,
+    "category": "investing",
+    "keywords": ["derivatives", "futures", "options", "f&o", "call option", "put option", "leverage"],
+    "related_topics": ["stock_market", "risk_management"],
+    "definition": "Derivatives are financial contracts that 'derive' their value from an underlying asset (like a stock or index). F&O allows you to bet on future price movements without owning the actual asset.",
+    "simple_explanation": "Imagine you want to buy a house in 3 months. You pay the owner a small 'token' amount today to lock in the price. If house prices go up, you win because you locked in a lower price. If they go down, you might lose your token money but you aren't forced to buy. That's an 'Option'. A 'Future' is a stricter contract where you *must* buy at that price, no matter what.",
+    "deep_explanation": "Futures are standardized contracts to buy/sell at a specific date. Options give the right, but not the obligation. 'Call' options are for when you expect prices to rise; 'Puts' for when you expect them to fall. In India, F&O is highly leveraged—you can control Rs. 10 Lakhs worth of stock with just Rs. 2 Lakhs. This is why 90% of retail traders lose money in F&O (SEBI data).",
+    "analogy": "F&O is like driving a Formula 1 car. It is incredibly fast and can make you a champion (huge profits), but if you don't know exactly what you're doing, the tiniest mistake leads to a total crash (wiping out your account).",
+    "example": {
+      "scenario": "Reliance is at Rs. 2500. You think it will hit Rs. 2700 this month.",
+      "calculation": "Instead of buying 1 share for 2500, you buy a 'Call Option' for Rs. 50. If Reliance goes to 2700, your Rs. 50 might become Rs. 200 (4x gain). If Reliance stays at 2500, your Rs. 50 becomes Zero.",
+      "lesson": "High leverage means your gains are multiplied, but your losses can be 100% of your investment very quickly."
+    },
+    "pros": [
+      "Can make huge profits with very little initial capital",
+      "Allows you to profit even when the market is falling (Shorting)",
+      "Used by big institutions to 'Hedge' (protect) their portfolios"
+    ],
+    "cons": [
+      "Extremely high risk—most beginners lose their entire capital",
+      "Complex math involved (Greeks: Delta, Theta, Gamma)",
+      "Requires constant monitoring; not a 'set and forget' investment"
+    ],
+    "quip": "F&O is a great servant but a terrible master."
+  },
+  "startup_valuation": {
+    "id": "startup_valuation",
+    "name": "Startup Valuation (Pre-money vs Post-money)",
+    "difficulty": 3,
+    "category": "investing",
+    "keywords": ["valuation", "pre-money", "post-money", "startup funding", "equity dilution"],
+    "related_topics": ["net_worth", "stock_market"],
+    "definition": "Startup valuation is the process of determining the worth of a private company. Pre-money is the value before an investment; Post-money is the value after the cash hits the bank.",
+    "simple_explanation": "When a shark on Shark Tank says, 'I'll give you 1 Crore for 10% of your company,' they are valuing your whole company at 10 Crores. The 'Pre-money' is what you were worth before they walked in, and 'Post-money' is your new value including their cash.",
+    "deep_explanation": "Formula: Post-money Valuation = Pre-money Valuation + Investment Amount. For example, if a startup is valued at Rs. 8 Cr (Pre) and raises Rs. 2 Cr, the Post-money is Rs. 10 Cr. The investor now owns 20% (2/10). This determines how much 'Dilution' the founders face.",
+    "analogy": "Think of a pizza. The 'Pre-money' is the size of the pizza you baked. The 'Investment' is an extra topping someone else brings. The 'Post-money' is the final pizza. By accepting the topping, you have to give away a few slices of the whole pizza to the person who brought the topping.",
+    "example": {
+      "scenario": "Founder has 100% of a company worth Rs. 4 Cr. An angel invests Rs. 1 Cr.",
+      "calculation": "Post-money = 5 Cr. Investor stake = 1/5 = 20%. Founder stake = 80%.",
+      "lesson": "Valuation isn't just a vanity number; it decides how much of your own 'baby' you still own."
+    },
+    "pros": [
+      "High valuation attracts top talent and more investors",
+      "Allows founders to raise more money while giving away less equity",
+      "Acts as a benchmark for the company's growth"
+    ],
+    "cons": [
+      "High valuations create massive pressure to grow at all costs",
+      "A 'Down Round' (lower valuation in next round) can destroy a startup's reputation",
+      "Valuation is often based on 'hype' rather than actual profits"
+    ],
+    "quip": "Valuation is what an investor thinks you're worth; Value is what you actually are."
+  },
+  "ccd_ccps": {
+    "id": "ccd_ccps",
+    "name": "CCD & CCPS (Startup Instruments)",
+    "difficulty": 3,
+    "category": "investing",
+    "keywords": ["ccd", "ccps", "convertible debenture", "preference shares", "startup terms"],
+    "related_topics": ["startup_valuation", "loans"],
+    "definition": "These are hybrid instruments used in startup funding. CCD (Compulsory Convertible Debenture) is debt that must turn into equity. CCPS (Compulsory Convertible Preference Shares) are shares with special 'VIP' rights.",
+    "simple_explanation": "Sometimes an investor gives money but doesn't want to decide the 'Price' (Valuation) yet. They use a **CCD**—it's like a loan that says, 'I'll give you money now, and we'll decide how many shares I get later when a bigger investor joins.' **CCPS** is the standard way VCs invest; they get 'Preference' (they get paid first if the company is sold).",
+    "deep_explanation": "CCD is treated as 'Deferred Equity' in India. It has a mandatory conversion date (usually within 10 years). CCPS is the most common instrument for Series A rounds; it offers 'Liquidation Preference' (investors get their money back before founders) and 'Anti-dilution' protection.",
+    "analogy": "A CCD is like a 'Pre-order' for a game that isn't finished yet. You pay now, and you're guaranteed to get the game later at a discount. CCPS is like a 'VIP Pass' to a club—you get into the club (the company), but you get to use the premium lounge and skip the line if there's an emergency (liquidation).",
+    "example": {
+      "scenario": "An angel gives 20 Lakhs as a CCD with a 20% discount on the next round.",
+      "calculation": "Next round share price = Rs. 100. The CCD holder gets shares at Rs. 80. They get 25,000 shares instead of 20,000.",
+      "lesson": "These instruments protect early investors for taking risks when the company's value was uncertain."
+    },
+    "pros": [
+      "Allows startups to get cash fast without long valuation arguments",
+      "CCD interest can be tax-deductible for the company",
+      "CCPS protects investors if the company is sold for a low price"
+    ],
+    "cons": [
+      "Complex legal paperwork (Term Sheets)",
+      "CCPS can be 'Founder Unfriendly' if the terms are too aggressive",
+      "Founders might lose control if they don't understand conversion ratios"
+    ],
+    "quip": "In startups, the 'Terms' of the deal are often more important than the 'Amount' of the deal."
+  },
+  "bank_guarantee_lc": {
+    "id": "bank_guarantee_lc",
+    "name": "Bank Guarantee vs Letter of Credit",
+    "difficulty": 3,
+    "category": "banking",
+    "keywords": ["bank guarantee", "bg", "letter of credit", "lc", "trade finance", "export import"],
+    "related_topics": ["banking", "loans"],
+    "definition": "These are 'Trade Finance' tools. A Bank Guarantee (BG) is a promise to pay if a party fails a contract. A Letter of Credit (LC) is a promise to pay as soon as a party fulfills a contract.",
+    "simple_explanation": "If you are a contractor building a bridge for the Govt, they ask for a **Bank Guarantee**—if you run away without finishing, the bank pays the Govt a penalty. If you are buying 10,000 iPhones from China, the seller asks for a **Letter of Credit**—the bank tells the seller, 'Don't worry, ship the goods, and I will pay you the moment you show me the shipping documents.'",
+    "deep_explanation": "BG is a 'Non-fund based' limit. The bank doesn't give cash immediately but puts its reputation on the line. LC is used extensively in International Trade to bridge the 'Trust Gap' between buyers and sellers who have never met.",
+    "analogy": "A Bank Guarantee is like a 'Security Deposit' for a flat—you only lose it if you break something. A Letter of Credit is like 'Cash on Delivery'—the payment is ready and waiting, but it's only released when the delivery boy (shipper) shows the receipt.",
+    "example": {
+      "scenario": "An Indian importer buys chemicals from Germany.",
+      "calculation": "The German seller won't ship without money. The Indian buyer won't pay without goods. The Bank issues an LC for $50,000.",
+      "lesson": "Banks act as the 'Trusted Middleman' that makes global trade possible."
+    },
+    "pros": [
+      "Reduces risk for both buyer and seller in big deals",
+      "Allows companies to do business with strangers globally",
+      "Can be used as 'Collateral' to get other loans"
+    ],
+    "cons": [
+      "Banks charge high commissions for these services",
+      "Requires the company to have a very good credit rating",
+      "Strict documentation—even a tiny spelling mistake can stop a payment"
+    ],
+    "quip": "Trade finance: because 'Trust' is the most expensive commodity in business."
+  },
+  "silver": {
+    "id": "silver",
+    "name": "Silver (The Dual-Purpose Metal)",
+    "difficulty": 2,
+    "category": "commodities",
+    "keywords": ["silver", "chandi", "precious metals", "industrial silver", "silver price"],
+    "related_topics": ["gold", "inflation", "stock_market"],
+    "definition": "Silver is a precious metal used both as an investment (store of value) and an industrial raw material (electronics, solar panels).",
+    "simple_explanation": "If Gold is the 'King' of safety, Silver is the 'Hard-working Prince.' Unlike gold, which mostly sits in vaults, silver is used in your phone, car, and solar panels. This means its price changes based on both 'fear' (like gold) and 'factory demand' (industrial growth).",
+    "deep_explanation": "Silver is much more volatile than gold because the silver market is smaller. It has a high 'Industrial-to-Investment' ratio. Key driver: The Gold-Silver Ratio (how many ounces of silver buy one ounce of gold). Historically, when this ratio is very high (above 80), silver is considered 'cheap' compared to gold.",
+    "analogy": "Silver is like a 'High-Beta' version of Gold. When Gold walks, Silver runs; when Gold slips, Silver falls. It’s like gold with a turbo-charger attached—more speed, but more risk of a crash.",
+    "example": {
+      "scenario": "A new breakthrough in Solar Energy increases global demand for silver paste.",
+      "calculation": "Industrial demand rises by 20%. Even if the stock market is stable, Silver prices could jump 15% due to its 'worker' status.",
+      "lesson": "Silver isn't just for jewelry; its price is tied to the future of technology."
+    },
+    "pros": [
+      "Cheaper to start investing in than gold (higher accessibility)",
+      "High growth potential during industrial booms",
+      "Acts as a hedge against inflation just like gold"
+    ],
+    "cons": [
+      "Extremely volatile—price swings of 5-10% in a day are possible",
+      "Bulky to store physically (1kg of silver is much larger than 1kg of gold)",
+      "GST of 3% applies to physical purchases, eating into immediate returns"
+    ],
+    "quip": "Gold is for wealth preservation; Silver is for wealth accumulation."
+  },
+  "commodity_fluctuations": {
+    "id": "commodity_fluctuations",
+    "name": "Why Gold & Silver Prices Fluctuate",
+    "difficulty": 2,
+    "category": "commodities",
+    "keywords": ["price drop", "price hike", "volatility", "gold rate", "silver rate", "geopolitics"],
+    "related_topics": ["gold", "silver", "inflation", "currency_exchange"],
+    "definition": "The movement in prices of precious metals driven by the 'Fear Index,' central bank reserves, and the strength of the US Dollar.",
+    "simple_explanation": "Why did gold go up today? Usually, it's because the world is 'scared' (war, recession) or the US Dollar got 'weak.' When the dollar loses value, people dump their cash and buy gold/silver to protect their wealth. When the world is peaceful and interest rates are high, people sell gold to put money in banks, causing prices to drop.",
+    "deep_explanation": "Three main drivers: 1. **The US Dollar:** Gold is priced in USD globally. Weak Dollar = Expensive Gold. 2. **Interest Rates:** Gold pays 0% interest. If banks offer 9% interest, people sell gold to earn that 9%. 3. **Central Banks:** When the RBI or China's PBOC buys tons of gold for their reserves, the price skyrockets due to massive demand.",
+    "analogy": "Gold and Silver prices are like a 'Trust Thermometer.' When people don't trust the government or the economy, the thermometer (price) goes up (Hot). When everything is stable and people trust the system, the thermometer goes down (Cool).",
+    "example": {
+      "scenario": "The US Fed announces they will cut interest rates significantly.",
+      "calculation": "Dollar weakens → Investors move to Gold → Price rises from $2000 to $2150 per ounce.",
+      "lesson": "Precious metals thrive on the 'misfortune' of paper currency."
+    },
+    "pros": [
+      "Predictable behavior: usually rises when stocks fall",
+      "Global liquidity—can be sold in any country at the same market rate",
+      "Easy to track via international 'Spot Prices'"
+    ],
+    "cons": [
+      "Prices can stay 'flat' for years if the economy is too stable",
+      "Influenced by global events you cannot control (like wars)",
+      "Sudden interest rate hikes by central banks can cause a price crash"
+    ],
+    "quip": "Gold is the only money that doesn't have a 'Reset' button."
+  },
+  "currency_fluctuation_effects": {
+    "id": "currency_fluctuation_effects",
+    "name": "Currency Value: Effects & Market Impact",
+    "difficulty": 3,
+    "category": "macroeconomics",
+    "keywords": ["devaluation", "appreciation", "import export", "dollar impact", "rupee falling"],
+    "related_topics": ["currency_exchange", "inflation", "stock_market"],
+    "definition": "How the rise and fall of the Rupee affects the stock market, your cost of living, and national debt.",
+    "simple_explanation": "When the Rupee 'falls' against the Dollar, your iPhone and petrol become expensive because India has to pay more for them in USD. This causes inflation. However, it’s great for IT companies (like TCS/Infosys) because they earn in Dollars; when they bring that money back to India, it converts into more Rupees!",
+    "deep_explanation": "A falling Rupee (Depreciation) leads to: 1. **Imported Inflation:** Oil prices rise, leading to higher transport costs for everything. 2. **FII Outflows:** Foreign investors get scared and sell Indian stocks to take their money back in Dollars. 3. **Export Boost:** Textiles and Software become cheaper for foreigners to buy, helping those sectors grow.",
+    "analogy": "Currency value is like a 'Tug-of-War.' On one side is the Importer (who wants a strong Rupee to buy cheap oil); on the other is the Exporter (who wants a weak Rupee to earn more profit). The RBI is the referee trying to keep the rope in the center.",
+    "example": {
+      "scenario": "Rupee moves from 80 to 85 per Dollar.",
+      "calculation": "A $1000 laptop used to cost Rs. 80,000. Now it costs Rs. 85,000. That's a 6.25% price hike without the store changing its price.",
+      "lesson": "Your 'local' purchasing power is heavily tied to 'global' exchange rates."
+    },
+    "pros": [
+      "Weak currency makes a country's exports more competitive globally",
+      "Strong currency makes traveling abroad and higher education cheaper",
+      "Stable currency attracts long-term foreign investment (FDI)"
+    ],
+    "cons": [
+      "Rapid drops (crashes) can lead to an economic crisis",
+      "High volatility makes it hard for businesses to plan long-term",
+      "Weak currency forces the RBI to use up precious Forex reserves to 'save' it"
+    ],
+    "quip": "When the Dollar sneezes, the Rupee catches a cold."
+  }
+}
