@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="/gesturex.png">
+<title>GestureX Modes</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Bebas+Neue&display=swap');
+
+  :root {
+    --bg-1: #04141a;
+    --bg-2: #11081e;
+    --panel: rgba(7, 16, 28, 0.72);
+    --line: rgba(255, 255, 255, 0.16);
+    --text: #ecf7ff;
+    --muted: #9cb5c7;
+    --air: #3bd9ff;
+    --neon: #ff4d8a;
+    --ok: #7cf8b3;
+    --danger: #ff7d7d;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    min-height: 100vh;
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    background:
+      radial-gradient(1000px 500px at 6% 8%, rgba(59, 217, 255, 0.18), transparent 60%),
+      radial-gradient(900px 480px at 92% 88%, rgba(255, 77, 138, 0.20), transparent 60%),
+      linear-gradient(130deg, var(--bg-1), var(--bg-2));
+    overflow: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 48px 48px;
+    opacity: 0.2;
+    pointer-events: none;
+  }
+
+  .app-shell {
+    position: relative;
+    z-index: 1;
+    height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: 14px;
+    padding: 14px;
+  }
+
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--panel);
+    backdrop-filter: blur(6px);
+  }
+
+  .brand {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.8rem, 3.2vw, 2.4rem);
+    letter-spacing: 0.08em;
+    line-height: 1;
+  }
+
+  .subtitle {
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+  }
+
+  .mode-controls {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .mode-btn,
+  .action-btn {
+    border: 1px solid var(--line);
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 0.88rem;
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: transform 140ms ease, border-color 140ms ease, background 140ms ease;
+  }
+
+  .mode-btn:hover,
+  .action-btn:hover {
+    transform: translateY(-1px);
+    border-color: rgba(255, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.10);
+  }
+
+  .mode-btn.active-air {
+    border-color: color-mix(in srgb, var(--air) 72%, white 10%);
+    box-shadow: 0 0 0 1px rgba(59, 217, 255, 0.4) inset;
+    background: rgba(59, 217, 255, 0.14);
+  }
+
+  .mode-btn.active-neon {
+    border-color: color-mix(in srgb, var(--neon) 72%, white 10%);
+    box-shadow: 0 0 0 1px rgba(255, 77, 138, 0.4) inset;
+    background: rgba(255, 77, 138, 0.14);
+  }
+
+  .viewer {
+    position: relative;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.6);
+  }
+
+  #demo-frame {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    opacity: 0;
+    transition: opacity 240ms ease;
+  }
+
+  #demo-frame.visible {
+    opacity: 1;
+  }
+
+  .status-pill {
+    position: absolute;
+    left: 14px;
+    bottom: 14px;
+    z-index: 5;
+    background: rgba(7, 16, 28, 0.75);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-size: 0.8rem;
+    color: var(--muted);
+    padding: 8px 12px;
+    backdrop-filter: blur(6px);
+  }
+
+  .status-pill.good { color: var(--ok); }
+  .status-pill.bad { color: var(--danger); }
+
+  .quick-help {
+    position: absolute;
+    right: 14px;
+    bottom: 14px;
+    z-index: 5;
+    padding: 8px 10px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: rgba(7, 16, 28, 0.75);
+    color: var(--muted);
+    font-size: 0.78rem;
+    max-width: min(52ch, 55vw);
+    line-height: 1.35;
+  }
+
+  @media (max-width: 760px) {
+    .app-shell {
+      gap: 10px;
+      padding: 10px;
+    }
+
+    .topbar {
+      border-radius: 12px;
+      padding: 10px;
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .mode-controls {
+      justify-content: flex-start;
+    }
+
+    .mode-btn,
+    .action-btn {
+      padding: 9px 12px;
+      font-size: 0.82rem;
+    }
+
+    .quick-help {
+      left: 14px;
+      right: 14px;
+      max-width: none;
+      bottom: 52px;
+    }
+  }
+</style>
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <h1 class="title">GestureX Mode Console</h1>
+        <p class="subtitle">Switch between Air Draw mode and Neon String mode in one UI</p>
+      </div>
+
+      <div class="mode-controls">
+        <button class="mode-btn" id="air-btn" type="button">Air Draw Mode</button>
+        <button class="mode-btn" id="neon-btn" type="button">Neon String Mode</button>
+        <button class="action-btn" id="reload-btn" type="button">Reload Mode</button>
+      </div>
+    </header>
+
+    <section class="viewer" aria-label="Mode Viewer">
+      <iframe id="demo-frame" title="GestureX Demo Frame" allow="camera; microphone; autoplay"></iframe>
+      <div class="status-pill" id="status">Ready</div>
+      <div class="quick-help">
+        Tip: if camera fails on file protocol, run a local static server and open through localhost.
+      </div>
+    </section>
+  </main>
+
+<script>
+  // --- Mode Registry ---
+  const MODES = {
+    air: {
+      label: 'Air Draw Mode',
+      file: 'Air draw.html',
+      buttonId: 'air-btn',
+      activeClass: 'active-air'
+    },
+    neon: {
+      label: 'Neon String Mode',
+      file: 'Neon elastic hand toy.html',
+      buttonId: 'neon-btn',
+      activeClass: 'active-neon'
+    }
+  };
+
+  // --- Elements ---
+  const frame = document.getElementById('demo-frame');
+  const statusEl = document.getElementById('status');
+  const reloadBtn = document.getElementById('reload-btn');
+
+  let currentMode = 'air';
+
+  // --- Helpers ---
+  function setStatus(message, kind) {
+    statusEl.textContent = message;
+    statusEl.className = 'status-pill';
+    if (kind === 'good') statusEl.classList.add('good');
+    if (kind === 'bad') statusEl.classList.add('bad');
+  }
+
+  function updateButtons(modeKey) {
+    Object.entries(MODES).forEach(([key, mode]) => {
+      const btn = document.getElementById(mode.buttonId);
+      const active = key === modeKey;
+      btn.classList.remove('active-air', 'active-neon');
+      if (active) {
+        btn.classList.add(mode.activeClass);
+        btn.setAttribute('aria-pressed', 'true');
+      } else {
+        btn.setAttribute('aria-pressed', 'false');
+      }
+    });
+  }
+
+  function loadMode(modeKey, forceReload) {
+    const mode = MODES[modeKey];
+    if (!mode) return;
+
+    if (!forceReload && currentMode === modeKey && frame.getAttribute('src')) return;
+
+    currentMode = modeKey;
+    updateButtons(modeKey);
+    frame.classList.remove('visible');
+    setStatus('Loading ' + mode.label + '...', '');
+
+    // Use an encoded relative path so spaces in filenames work reliably.
+    frame.setAttribute('src', encodeURI(mode.file));
+  }
+
+  // --- Events ---
+  frame.addEventListener('load', () => {
+    frame.classList.add('visible');
+    setStatus('Active: ' + MODES[currentMode].label, 'good');
+  });
+
+  frame.addEventListener('error', () => {
+    setStatus('Unable to load selected mode.', 'bad');
+  });
+
+  Object.entries(MODES).forEach(([key, mode]) => {
+    document.getElementById(mode.buttonId).addEventListener('click', () => loadMode(key, false));
+  });
+
+  reloadBtn.addEventListener('click', () => loadMode(currentMode, true));
+
+  window.addEventListener('keydown', (event) => {
+    if (event.key.toLowerCase() === '1') loadMode('air', false);
+    if (event.key.toLowerCase() === '2') loadMode('neon', false);
+    if (event.key.toLowerCase() === 'r') loadMode(currentMode, true);
+  });
+
+  // --- Boot ---
+  loadMode('air', false);
+</script>
+</body>
+</html>

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neon Elastic Hand Toy</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #000; overflow: hidden; font-family: 'Courier New', monospace; width: 100vw; height: 100vh; }
+  #container { position: relative; width: 100vw; height: 100vh; }
+  #webcam { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); opacity: 0; pointer-events: none; }
+  #canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+  #loading-screen {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: #000; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; z-index: 100; transition: opacity 0.8s ease;
+  }
+  .loading-title { font-size: clamp(1.5rem,4vw,2.5rem); letter-spacing: 0.3em; text-transform: uppercase; color: #fff; margin-bottom: 1.5rem; font-weight: 100; }
+  .loading-subtitle { font-size: clamp(0.7rem,1.5vw,0.9rem); letter-spacing: 0.2em; color: rgba(255,255,255,0.4); margin-bottom: 3rem; text-transform: uppercase; }
+  .neon-pulse-ring { width: 120px; height: 120px; border-radius: 50%; border: 2px solid #f472b6; position: relative; animation: pulse-ring 1.8s ease-in-out infinite; box-shadow: 0 0 20px #f472b6, inset 0 0 20px rgba(244,114,182,0.1); }
+  .neon-pulse-ring::before { content: ''; position: absolute; top: 15px; left: 15px; right: 15px; bottom: 15px; border-radius: 50%; border: 2px solid #22d3ee; animation: pulse-ring 1.8s ease-in-out infinite 0.3s; box-shadow: 0 0 15px #22d3ee; }
+  .neon-pulse-ring::after { content: ''; position: absolute; top: 30px; left: 30px; right: 30px; bottom: 30px; border-radius: 50%; border: 2px solid #4ade80; animation: pulse-ring 1.8s ease-in-out infinite 0.6s; box-shadow: 0 0 10px #4ade80; }
+  @keyframes pulse-ring { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.08); opacity: 0.6; } }
+  .loading-hint { margin-top: 2.5rem; font-size: clamp(0.65rem,1.2vw,0.8rem); letter-spacing: 0.25em; color: rgba(255,255,255,0.35); text-transform: uppercase; animation: blink 2s ease-in-out infinite; }
+  @keyframes blink { 0%, 100% { opacity: 0.35; } 50% { opacity: 0.8; } }
+
+  #status-label {
+    position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+    font-size: 0.75rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: rgba(255,255,255,0.5); padding: 0.4rem 1.2rem;
+    border: 1px solid rgba(255,255,255,0.15); border-radius: 2px;
+    backdrop-filter: blur(4px); transition: opacity 0.5s; opacity: 0; pointer-events: none; z-index: 10;
+  }
+  #status-label.visible { opacity: 1; }
+
+  #legend {
+    position: absolute; top: 1.2rem; right: 1.5rem; display: flex;
+    flex-direction: column; gap: 0.4rem; opacity: 0; transition: opacity 0.5s; pointer-events: none; z-index: 10;
+  }
+  #legend.visible { opacity: 1; }
+  .legend-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+</style>
+</head>
+<body>
+<div id="container">
+  <video id="webcam" autoplay playsinline muted></video>
+  <canvas id="canvas"></canvas>
+
+  <div id="loading-screen">
+    <div class="loading-title">Elastic</div>
+    <div class="loading-subtitle">Neon Hand Toy</div>
+    <div class="neon-pulse-ring"></div>
+    <div class="loading-hint">Allow camera access to begin</div>
+  </div>
+
+  <div id="status-label"></div>
+  <div id="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#ff2d78;box-shadow:0 0 6px #ff2d78"></div>Thumb</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#00f0ff;box-shadow:0 0 6px #00f0ff"></div>Index</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#ffffff;box-shadow:0 0 6px #aaa"></div>Middle</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#ffe033;box-shadow:0 0 6px #ffe033"></div>Ring</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#bf5fff;box-shadow:0 0 6px #bf5fff"></div>Pinky</div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+
+<script>
+// ─── Finger config ───────────────────────────────────────────────────────────
+const FINGERS = [
+  { name: 'thumb',  indices: [1,2,3,4],     color: '#ff2d78', rgb: '255,45,120'   },
+  { name: 'index',  indices: [5,6,7,8],     color: '#00f0ff', rgb: '0,240,255'    },
+  { name: 'middle', indices: [9,10,11,12],  color: '#ffffff', rgb: '255,255,255'  },
+  { name: 'ring',   indices: [13,14,15,16], color: '#ffe033', rgb: '255,224,51'   },
+  { name: 'pinky',  indices: [17,18,19,20], color: '#bf5fff', rgb: '191,95,255'   },
+];
+
+// Also connect wrist (0) to wrist — included in "palm cross" strings
+// Wrist gets white color
+const WRIST_COLOR = { color: '#e5f4ff', rgb: '229,244,255' };
+
+function getLandmarkColor(idx) {
+  if (idx === 0) return WRIST_COLOR;
+  if (idx <= 4)  return FINGERS[0];
+  if (idx <= 8)  return FINGERS[1];
+  if (idx <= 12) return FINGERS[2];
+  if (idx <= 16) return FINGERS[3];
+  return FINGERS[4];
+}
+
+// ─── State ───────────────────────────────────────────────────────────────────
+const canvas   = document.getElementById('canvas');
+const ctx      = canvas.getContext('2d');
+const video    = document.getElementById('webcam');
+const loadScr  = document.getElementById('loading-screen');
+const statusEl = document.getElementById('status-label');
+const legendEl = document.getElementById('legend');
+
+let W = 0, H = 0;
+let leftHand  = null, rightHand  = null;
+let lastLeft  = null, lastRight  = null;
+let lastLeftTs = 0,   lastRightTs = 0;
+let dissolveT = 0;
+let idleT     = 0;
+const GHOST_MS = 800; // how long to keep last seen hand
+
+// ─── Resize ──────────────────────────────────────────────────────────────────
+function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+window.addEventListener('resize', resize);
+resize();
+
+// ─── Landmark helper (mirrors X) ─────────────────────────────────────────────
+function lm(hand, idx) {
+  const p = hand.landmarks[idx];
+  return { x: (1 - p.x) * W, y: p.y * H };
+}
+
+// ─── Classify hands ──────────────────────────────────────────────────────────
+function classifyHands(results) {
+  leftHand = null; rightHand = null;
+  if (!results.multiHandLandmarks) return;
+  const now = performance.now();
+  results.multiHandLandmarks.forEach((lms, i) => {
+    const label = results.multiHandedness[i].label;
+    const obj = { landmarks: lms };
+    if (label === 'Right') { leftHand = obj; lastLeft = obj; lastLeftTs = now; }
+    else                   { rightHand = obj; lastRight = obj; lastRightTs = now; }
+  });
+}
+
+// ─── Draw gradient neon string between two points ────────────────────────────
+// cA/cB = hex color strings, sag = vertical midpoint offset for elasticity
+function drawString(pL, pR, colorL, colorR, alpha, sag) {
+  const mx = (pL.x + pR.x) / 2;
+  const my = (pL.y + pR.y) / 2 + (sag || 0);
+
+  // Build gradient from left to right
+  const grad = ctx.createLinearGradient(pL.x, pL.y, pR.x, pR.y);
+  grad.addColorStop(0,   `rgba(${colorL.rgb},${alpha})`);
+  grad.addColorStop(0.5, `rgba(${colorL.rgb},${Math.min(1, alpha * 1.2)})`);
+  grad.addColorStop(1,   `rgba(${colorR.rgb},${alpha})`);
+
+  // Outer bloom
+  ctx.save();
+  ctx.globalAlpha = 1;
+  ctx.strokeStyle = grad;
+  ctx.shadowColor = colorL.color;
+  ctx.shadowBlur  = 18;
+  ctx.lineWidth   = 7;
+  ctx.globalAlpha = alpha * 0.15;
+  ctx.beginPath();
+  ctx.moveTo(pL.x, pL.y);
+  ctx.quadraticCurveTo(mx, my, pR.x, pR.y);
+  ctx.stroke();
+
+  // Mid glow
+  ctx.globalAlpha = alpha * 0.4;
+  ctx.lineWidth   = 2.5;
+  ctx.shadowBlur  = 10;
+  ctx.beginPath();
+  ctx.moveTo(pL.x, pL.y);
+  ctx.quadraticCurveTo(mx, my, pR.x, pR.y);
+  ctx.stroke();
+
+  // Sharp core
+  ctx.globalAlpha = alpha * 0.92;
+  ctx.lineWidth   = 1.0;
+  ctx.shadowBlur  = 5;
+  ctx.beginPath();
+  ctx.moveTo(pL.x, pL.y);
+  ctx.quadraticCurveTo(mx, my, pR.x, pR.y);
+  ctx.stroke();
+
+  ctx.restore();
+}
+
+// ─── Draw sparkle dot ────────────────────────────────────────────────────────
+function drawDot(p, colorObj, radius, alpha) {
+  const { rgb, color } = colorObj;
+  ctx.save();
+
+  // Outer soft bloom
+  ctx.globalAlpha = alpha * 0.10;
+  ctx.beginPath();
+  ctx.arc(p.x, p.y, radius * 4, 0, Math.PI * 2);
+  ctx.fillStyle   = `rgba(${rgb},1)`;
+  ctx.shadowBlur  = 0;
+  ctx.fill();
+
+  // Mid bloom
+  ctx.globalAlpha = alpha * 0.28;
+  ctx.beginPath();
+  ctx.arc(p.x, p.y, radius * 2.2, 0, Math.PI * 2);
+  ctx.fillStyle   = `rgba(${rgb},1)`;
+  ctx.shadowBlur  = 22;
+  ctx.shadowColor = color;
+  ctx.fill();
+
+  // Core dot
+  ctx.globalAlpha = alpha;
+  ctx.beginPath();
+  ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
+  ctx.fillStyle   = `rgba(${rgb},1)`;
+  ctx.shadowBlur  = 20;
+  ctx.shadowColor = color;
+  ctx.fill();
+
+  // White-hot center
+  ctx.globalAlpha = alpha * 0.85;
+  ctx.beginPath();
+  ctx.arc(p.x, p.y, radius * 0.38, 0, Math.PI * 2);
+  ctx.fillStyle   = '#ffffff';
+  ctx.shadowBlur  = 8;
+  ctx.shadowColor = '#ffffff';
+  ctx.fill();
+
+  ctx.restore();
+}
+
+// ─── Compute hand sag (elasticity) ───────────────────────────────────────────
+function computeSag(lH, rH) {
+  let sum = 0;
+  for (let i = 0; i < 21; i++) {
+    const l = lm(lH, i), r = lm(rH, i);
+    const dx = r.x - l.x, dy = r.y - l.y;
+    sum += Math.sqrt(dx*dx + dy*dy);
+  }
+  const avg = sum / 21;
+  // Sag increases with distance — up to 22px
+  return Math.min(22, Math.max(0, (avg - 120) * 0.06));
+}
+
+// ─── Draw the full cat's cradle ───────────────────────────────────────────────
+function drawCradle(lH, rH, alpha) {
+  ctx.save();
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+
+  const sag = computeSag(lH, rH);
+
+  // Only draw strings for each finger's own joint indices (NO wrist, NO palm bases, NO cross-finger)
+  // Finger indices: thumb=1,2,3,4 | index=6,7,8 | middle=10,11,12 | ring=14,15,16 | pinky=18,19,20
+  // Skip palm bases (5,9,13,17) and wrist (0)
+  const STRING_INDICES = [
+    1, 2, 3, 4,       // thumb
+    6, 7, 8,          // index finger (skip base 5)
+    10, 11, 12,       // middle finger (skip base 9)
+    14, 15, 16,       // ring finger (skip base 13)
+    18, 19, 20,       // pinky (skip base 17)
+  ];
+
+  const TIPS = new Set([4, 8, 12, 16, 20]);
+
+  // Draw strings first (below dots)
+  for (const idx of STRING_INDICES) {
+    const pL = lm(lH, idx);
+    const pR = lm(rH, idx);
+    const c  = getLandmarkColor(idx);
+    const isTip = TIPS.has(idx);
+    drawString(pL, pR, c, c, alpha, isTip ? sag : sag * 0.35);
+  }
+
+  // Draw glowing dots on top — only for the same string indices
+  for (const idx of STRING_INDICES) {
+    const pL = lm(lH, idx);
+    const pR = lm(rH, idx);
+    const c  = getLandmarkColor(idx);
+    const isTip = TIPS.has(idx);
+    const r = isTip ? 6.5 : 3.8;
+    drawDot(pL, c, r, alpha);
+    drawDot(pR, c, r, alpha);
+  }
+
+  ctx.restore();
+}
+
+// ─── Idle shimmer ────────────────────────────────────────────────────────────
+function drawIdle() {
+  idleT += 0.016;
+  const cx = W/2, cy = H/2;
+  FINGERS.forEach((f, i) => {
+    const angle = (i / 5) * Math.PI * 2 + idleT;
+    const r     = 80 + 20 * Math.sin(idleT * 2 + i);
+    const x     = cx + Math.cos(angle) * r;
+    const y     = cy + Math.sin(angle) * r;
+    const oa    = 0.28 + 0.18 * Math.sin(idleT * 3 + i);
+    ctx.save();
+    ctx.globalAlpha = oa;
+    ctx.beginPath();
+    ctx.arc(x, y, 5, 0, Math.PI * 2);
+    ctx.fillStyle   = f.color;
+    ctx.shadowBlur  = 16;
+    ctx.shadowColor = f.color;
+    ctx.fill();
+    ctx.restore();
+  });
+}
+
+// ─── Render loop ─────────────────────────────────────────────────────────────
+function render() {
+  requestAnimationFrame(render);
+  ctx.clearRect(0, 0, W, H);
+
+  // Draw mirrored webcam
+  if (video.readyState >= 2) {
+    ctx.save();
+    ctx.translate(W, 0);
+    ctx.scale(-1, 1);
+    ctx.drawImage(video, 0, 0, W, H);
+    ctx.restore();
+  }
+
+  const now = performance.now();
+  // Use last seen hand for up to GHOST_MS ms to prevent flickering on fast rotation
+  const activeL = leftHand  || (now - lastLeftTs  < GHOST_MS ? lastLeft  : null);
+  const activeR = rightHand || (now - lastRightTs < GHOST_MS ? lastRight : null);
+
+  const hasTwo  = !!(activeL && activeR);
+  const hasNone = !activeL && !activeR;
+
+  // Smooth dissolve transition — faster attack (0.055), slower decay (0.018)
+  const target = hasTwo ? 1 : 0.0;
+  const rate   = dissolveT < target ? 0.055 : 0.018;
+  dissolveT += (target - dissolveT) * rate;
+
+  // Status
+  if (hasNone) setStatus('Show both hands');
+  else if (!hasTwo) setStatus('Show both hands');
+  else setStatus('');
+
+  legendEl.classList.toggle('visible', !!(leftHand || rightHand));
+
+  if (hasNone) drawIdle();
+
+  if (dissolveT > 0.01) {
+    if (activeL && activeR) {
+      drawCradle(activeL, activeR, dissolveT);
+    } else if (activeL && lastRight) {
+      drawCradle(activeL, lastRight, dissolveT * 0.5);
+    } else if (activeR && lastLeft) {
+      drawCradle(lastLeft, activeR, dissolveT * 0.5);
+    }
+  }
+}
+
+// ─── Status helper ────────────────────────────────────────────────────────────
+function setStatus(msg) {
+  if (msg) { statusEl.textContent = msg; statusEl.classList.add('visible'); }
+  else      { statusEl.classList.remove('visible'); }
+}
+
+// ─── MediaPipe setup ──────────────────────────────────────────────────────────
+function initMediaPipe() {
+  const hands = new Hands({
+    locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
+  });
+
+  hands.setOptions({
+    maxNumHands: 2,
+    modelComplexity: 1,
+    selfieMode: false,
+    minDetectionConfidence: 0.55,
+    minTrackingConfidence: 0.5,
+  });
+
+  hands.onResults(classifyHands);
+
+  const camera = new Camera(video, {
+    onFrame: async () => { await hands.send({ image: video }); },
+    width: 1280,
+    height: 720,
+  });
+
+  camera.start().then(() => {
+    loadScr.style.opacity = '0';
+    setTimeout(() => loadScr.style.display = 'none', 800);
+  }).catch(err => {
+    document.querySelector('.loading-hint').textContent = 'Camera access denied';
+    console.error(err);
+  });
+}
+
+initMediaPipe();
+render();
+</script>
+</body>
+</html>

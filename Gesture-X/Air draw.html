@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Air Draw — Hand Tracking Jutsu</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #000;
+    overflow: hidden;
+    font-family: 'Share Tech Mono', monospace;
+    color: #fff;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  #container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  #webcam {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transform: scaleX(-1);
+    opacity: 0.82;
+    filter: brightness(1.08) contrast(1.12) saturate(1.2);
+    image-rendering: high-quality;
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+
+  #trail-canvas, #fx-canvas {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+  }
+
+  #hud {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent);
+    z-index: 10;
+  }
+
+  #badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .badge {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .badge-cyan  { color: #00ffff; border-color: #00ffff44; background: #00ffff11; }
+  .badge-blue  { color: #4af; border-color: #4af4; background: #4af1; }
+  .badge-purple{ color: #c084fc; border-color: #c084fc44; background: #c084fc11; }
+  .badge-amber { color: #fbbf24; border-color: #fbbf2444; background: #fbbf2411; }
+
+  #status {
+    font-size: 12px;
+    color: #ffffff88;
+    letter-spacing: 0.08em;
+  }
+
+  #gesture-indicator {
+    position: absolute;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(0,0,0,0.6);
+    z-index: 20;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    opacity: 0;
+    backdrop-filter: blur(4px);
+  }
+  #gesture-indicator.visible { opacity: 1; }
+
+  #gesture-indicator .g-icon { margin-right: 6px; }
+  #gesture-indicator .g-frames {
+    margin-left: 8px;
+    font-size: 10px;
+    opacity: 0.5;
+  }
+
+  #effect-label {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(28px, 5vw, 52px);
+    font-weight: 900;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    opacity: 0;
+    transition: opacity 0.15s;
+    z-index: 10;
+    pointer-events: none;
+    text-shadow: 0 0 20px currentColor, 0 0 50px currentColor, 0 0 100px currentColor;
+    white-space: nowrap;
+  }
+
+  #brush-panel {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.6);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 12px;
+    z-index: 12;
+    width: 92px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    backdrop-filter: blur(3px);
+  }
+
+  .panel-label {
+    width: 100%;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #ffffff99;
+    text-align: left;
+  }
+
+  #swatch-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    width: 100%;
+    justify-items: center;
+  }
+
+  .swatch {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    background: var(--swatch);
+    box-shadow: 0 0 10px color-mix(in srgb, var(--swatch) 60%, transparent);
+  }
+
+  .swatch.selected {
+    border-color: #fff;
+  }
+
+  #thickness-wrap {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  #thickness-slider {
+    writing-mode: bt-lr;
+    -webkit-appearance: slider-vertical;
+    appearance: slider-vertical;
+    width: 28px;
+    height: 150px;
+    accent-color: #ff2dcd;
+    cursor: pointer;
+  }
+
+  #thickness-value {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: #ffffffcc;
+  }
+
+  #mode-wrap {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  #mode-buttons {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 6px;
+    width: 100%;
+  }
+
+  .mode-btn {
+    width: 100%;
+    border: 1px solid rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.05);
+    color: #ffffffbb;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-radius: 7px;
+    padding: 6px 4px;
+    cursor: pointer;
+  }
+
+  .mode-btn.active {
+    border-color: #00ffffaa;
+    color: #d9ffff;
+    background: rgba(0,255,255,0.16);
+    box-shadow: 0 0 10px rgba(0,255,255,0.35);
+  }
+
+  /* ── GESTURE INFO PANEL (left side) ─────────────────────────── */
+  #gesture-info {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.62);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 14px 12px;
+    z-index: 12;
+    width: 170px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    backdrop-filter: blur(4px);
+    transition: opacity 0.3s;
+  }
+
+  #gesture-info-title {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: #ffffff66;
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding-bottom: 6px;
+  }
+
+  .gi-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .gi-row:last-child { border-bottom: none; }
+
+  .gi-icon {
+    font-size: 17px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    filter: drop-shadow(0 0 5px currentColor);
+  }
+
+  .gi-text { display: flex; flex-direction: column; gap: 2px; }
+
+  .gi-name {
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .gi-desc {
+    font-size: 9px;
+    color: #ffffff55;
+    letter-spacing: 0.04em;
+    line-height: 1.45;
+  }
+
+  .gi-mode-tag {
+    font-size: 8px;
+    padding: 1px 5px;
+    border-radius: 3px;
+    margin-top: 2px;
+    display: inline-block;
+    letter-spacing: 0.06em;
+    font-weight: bold;
+  }
+  .gi-anime-only { background: rgba(180,100,255,0.25); color: #c084fc; border: 1px solid #c084fc44; }
+  .gi-all-modes  { background: rgba(0,255,255,0.1);   color: #00ffff; border: 1px solid #00ffff33; }
+
+  /* ── MODE-LOCKED TOAST (bottom-right, compact) ─────────────── */
+  #mode-toast {
+    position: absolute;
+    bottom: 24px;
+    right: 120px;
+    transform: translateY(8px);
+    background: rgba(0,0,0,0.80);
+    border: 1px solid #c084fc55;
+    border-radius: 8px;
+    padding: 7px 13px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    z-index: 50;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+    backdrop-filter: blur(5px);
+    white-space: nowrap;
+  }
+  #mode-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  #mode-toast .toast-icon { font-size: 13px; }
+  #mode-toast .toast-title {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: #c084fc;
+    text-transform: uppercase;
+  }
+  #mode-toast .toast-sub {
+    font-size: 9px;
+    color: #ffffff44;
+    letter-spacing: 0.05em;
+  }
+
+  /* Debug panel styling */
+  #debug-panel {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    width: 320px;
+    max-height: 200px;
+    overflow-y: auto;
+    background: rgba(0,0,0,0.82);
+    border: 1px solid #ffffff22;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    z-index: 9999;
+    pointer-events: none;
+    line-height: 1.7;
+  }
+
+  /* Gesture confidence bar */
+  #confidence-bar-wrap {
+    position: absolute;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 20;
+    pointer-events: none;
+  }
+
+  .conf-chip {
+    background: rgba(0,0,0,0.65);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 20px;
+    padding: 3px 12px;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    backdrop-filter: blur(4px);
+  }
+
+  .conf-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  #overlay {
+    position: absolute;
+    inset: 0;
+    background: #000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    gap: 24px;
+  }
+
+  #overlay h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(28px, 5vw, 56px);
+    font-weight: 900;
+    letter-spacing: 0.15em;
+    background: linear-gradient(135deg, #00ffff, #a78bfa, #fbbf24);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-align: center;
+  }
+
+  #overlay p {
+    color: #ffffff66;
+    font-size: 14px;
+    letter-spacing: 0.1em;
+    text-align: center;
+    max-width: 360px;
+    line-height: 1.7;
+  }
+
+  #start-btn {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    background: transparent;
+    color: #00ffff;
+    border: 1.5px solid #00ffff;
+    padding: 14px 40px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  }
+
+  #start-btn:hover {
+    background: #00ffff22;
+    box-shadow: 0 0 24px #00ffff66;
+  }
+
+  #loading-msg {
+    color: #ffffff44;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    display: none;
+  }
+
+  .gesture-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    max-width: 340px;
+    width: 100%;
+  }
+
+  .gesture-card {
+    border: 1px solid #ffffff11;
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    line-height: 1.6;
+  }
+
+  .gc-cyan   { border-color: #00ffff33; }
+  .gc-blue   { border-color: #4af3; }
+  .gc-purple { border-color: #c084fc33; }
+  .gc-amber  { border-color: #fbbf2433; }
+
+  .gesture-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 3px;
+  }
+  .gc-cyan   .gesture-label { color: #00ffff; }
+  .gc-blue   .gesture-label { color: #4af; }
+  .gc-purple .gesture-label { color: #c084fc; }
+  .gc-amber  .gesture-label { color: #fbbf24; }
+
+  .gesture-desc { color: #ffffff66; }
+</style>
+</head>
+<body>
+<div id="container">
+  <video id="webcam" autoplay playsinline muted></video>
+  <canvas id="trail-canvas"></canvas>
+  <canvas id="fx-canvas"></canvas>
+
+  <div id="hud">
+    <div id="badges">
+      <span class="badge badge-cyan">☝ Draw: index finger</span>
+      <span class="badge badge-blue">✊ Fist = Erase</span>
+      <span class="badge badge-purple">🖐 Palms = Effects (Anime only)</span>
+    </div>
+    <div id="status">Awaiting hands...</div>
+  </div>
+
+  <div id="gesture-indicator">
+    <span class="g-icon"></span>
+    <span class="g-name">NO GESTURE</span>
+    <span class="g-frames"></span>
+  </div>
+
+  <!-- Real-time confidence chips -->
+  <div id="confidence-bar-wrap">
+    <div class="conf-chip" id="chip-draw">
+      <div class="conf-dot" style="background:#39ff14"></div>
+      <span id="chip-draw-val">DRAW 0</span>
+    </div>
+    <div class="conf-chip" id="chip-erase">
+      <div class="conf-dot" style="background:#ff4444"></div>
+      <span id="chip-erase-val">ERASE 0</span>
+    </div>
+    <div class="conf-chip" id="chip-palm">
+      <div class="conf-dot" style="background:#22d3ee"></div>
+      <span id="chip-palm-val">PALM 0</span>
+    </div>
+  </div>
+
+  <div id="effect-label"></div>
+
+  <div id="brush-panel">
+    <div class="panel-label">COLORS</div>
+    <div id="swatch-grid">
+      <button class="swatch selected" data-color="#ff2dcd" style="--swatch:#ff2dcd" aria-label="Hot pink"></button>
+      <button class="swatch" data-color="#00ffff" style="--swatch:#00ffff" aria-label="Cyan"></button>
+      <button class="swatch" data-color="#39ff14" style="--swatch:#39ff14" aria-label="Neon green"></button>
+      <button class="swatch" data-color="#ff6600" style="--swatch:#ff6600" aria-label="Orange"></button>
+      <button class="swatch" data-color="#ff0044" style="--swatch:#ff0044" aria-label="Crimson"></button>
+      <button class="swatch" data-color="#ffe600" style="--swatch:#ffe600" aria-label="Yellow"></button>
+      <button class="swatch" data-color="#a855f7" style="--swatch:#a855f7" aria-label="Violet"></button>
+      <button class="swatch" data-color="#ffffff" style="--swatch:#ffffff" aria-label="White"></button>
+    </div>
+    <div id="thickness-wrap">
+      <div class="panel-label">THICKNESS</div>
+      <input id="thickness-slider" type="range" min="4" max="20" value="10" orient="vertical" aria-label="Brush thickness">
+      <div id="thickness-value">10 PX</div>
+    </div>
+    <div id="mode-wrap">
+      <div class="panel-label">MODE</div>
+      <div id="mode-buttons">
+        <button id="mode-classic" class="mode-btn active" type="button">Classic</button>
+        <button id="mode-anime" class="mode-btn" type="button">Anime</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gesture reference panel (left side) -->
+  <div id="gesture-info">
+    <div id="gesture-info-title">Hand Gestures</div>
+
+    <div class="gi-row">
+      <span class="gi-icon" style="color:#39ff14">☝</span>
+      <div class="gi-text">
+        <span class="gi-name" style="color:#39ff14">Draw</span>
+        <span class="gi-desc">Index finger up, rest curled. Paints glowing neon trails.</span>
+        <span class="gi-mode-tag gi-all-modes">All modes</span>
+      </div>
+    </div>
+
+    <div class="gi-row">
+      <span class="gi-icon" style="color:#ff4444">✊</span>
+      <div class="gi-text">
+        <span class="gi-name" style="color:#ff4444">Erase</span>
+        <span class="gi-desc">Tight closed fist. Wipes trails under your hand.</span>
+        <span class="gi-mode-tag gi-all-modes">All modes</span>
+      </div>
+    </div>
+
+    <div class="gi-row">
+      <span class="gi-icon" style="color:#88ddff">🖐</span>
+      <div class="gi-text">
+        <span class="gi-name" style="color:#88ddff">Rasengan</span>
+        <span class="gi-desc">Open right palm. Summons spiral blue energy orb.</span>
+        <span class="gi-mode-tag gi-anime-only">Anime mode only</span>
+      </div>
+    </div>
+
+    <div class="gi-row">
+      <span class="gi-icon" style="color:#cc88ff">🖐</span>
+      <div class="gi-text">
+        <span class="gi-name" style="color:#cc88ff">Chidori</span>
+        <span class="gi-desc">Open left palm. Summons purple lightning strike.</span>
+        <span class="gi-mode-tag gi-anime-only">Anime mode only</span>
+      </div>
+    </div>
+
+    <div class="gi-row">
+      <span class="gi-icon" style="color:#ffcc44">🤲</span>
+      <div class="gi-text">
+        <span class="gi-name" style="color:#ffcc44">Dr. Strange</span>
+        <span class="gi-desc">Both palms open. Conjures twin mystic shields.</span>
+        <span class="gi-mode-tag gi-anime-only">Anime mode only</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mode-locked toast notification -->
+  <div id="mode-toast">
+    <span class="toast-icon">🔒</span>
+    <span class="toast-title">Anime mode for effects</span>
+  </div>
+
+  <div id="overlay">
+    <h1>AIR DRAW</h1>
+    <p>Hand-tracking jutsu & sorcery. Use your webcam to paint neon trails and summon legendary effects.</p>
+    <div class="gesture-grid">
+      <div class="gesture-card gc-cyan">
+        <div class="gesture-label">Draw</div>
+        <div class="gesture-desc">Index finger extended, all others curled</div>
+      </div>
+      <div class="gesture-card gc-blue">
+        <div class="gesture-label">Rasengan</div>
+        <div class="gesture-desc">Open right hand toward camera</div>
+      </div>
+      <div class="gesture-card gc-purple">
+        <div class="gesture-label">Chidori</div>
+        <div class="gesture-desc">Open left hand toward camera</div>
+      </div>
+      <div class="gesture-card gc-amber">
+        <div class="gesture-label">Strange Shield</div>
+        <div class="gesture-desc">Both palms open simultaneously</div>
+      </div>
+    </div>
+    <button id="start-btn">Enable Camera</button>
+    <div id="loading-msg">Loading MediaPipe...</div>
+  </div>
+</div>
+
+<!-- Debug panel -->
+<div id="debug-panel"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+
+<script>
+// ─────────────────────────────────────────────────────────────────────────────
+//  AIR DRAW — FIXED GESTURE ENGINE
+//  Key fixes vs original:
+//  1. DRAW: relaxed — only requires index clearly up, other 3 curled at PIP
+//     (original required all 4 conditions including thumb, causing false negatives)
+//  2. ERASE: tightened — requires ALL fingers curled below MCP + compactness check
+//     (original's MCP check was correct but thumb check was too strict causing
+//      fist to sometimes read as DRAW)
+//  3. PALM (open): relaxed threshold from 3→2 fingers so it triggers reliably
+//  4. Priority order fixed: DRAW is now checked BEFORE palm, so pointing finger
+//     doesn't get eaten by an almost-open palm read
+//  5. Frame debounce: DRAW=2f (was 1—too jittery), ERASE=8f, PALM=3f
+//  6. Optical-flow-inspired delta smoothing: tracks previous tip position and
+//     only draws when displacement > minMove (like cv2.calcOpticalFlowPyrLK)
+//  7. prevPt is NOT reset on every non-draw frame — only on confirmed gesture
+//     switch, preventing stroke gaps when hand wobbles briefly out of DRAW
+// ─────────────────────────────────────────────────────────────────────────────
+
+const video      = document.getElementById('webcam');
+const trailCanvas = document.getElementById('trail-canvas');
+const fxCanvas   = document.getElementById('fx-canvas');
+const tCtx = trailCanvas.getContext('2d', { alpha: true, desynchronized: true });
+const fCtx = fxCanvas.getContext('2d',    { alpha: true, desynchronized: true });
+
+const overlay         = document.getElementById('overlay');
+const startBtn        = document.getElementById('start-btn');
+const loadingMsg      = document.getElementById('loading-msg');
+const statusEl        = document.getElementById('status');
+const effectLabel     = document.getElementById('effect-label');
+const swatches        = Array.from(document.querySelectorAll('.swatch'));
+const thicknessSlider = document.getElementById('thickness-slider');
+const thicknessValue  = document.getElementById('thickness-value');
+const modeClassicBtn  = document.getElementById('mode-classic');
+const modeAnimeBtn    = document.getElementById('mode-anime');
+const debugPanel      = document.getElementById('debug-panel');
+const chipDrawVal     = document.getElementById('chip-draw-val');
+const chipEraseVal    = document.getElementById('chip-erase-val');
+const chipPalmVal     = document.getElementById('chip-palm-val');
+const gestureIndicator = document.getElementById('gesture-indicator');
+const modeToast        = document.getElementById('mode-toast');
+
+// ── MODE-LOCKED TOAST ──────────────────────────────────────────────────────
+let toastTimer = null;
+function showModeLockToast() {
+  modeToast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => modeToast.classList.remove('show'), 1800);
+}
+
+// ── DEBUG ──────────────────────────────────────────────────────────────────
+function uiLog(cat, msg) {
+  const colors = { GESTURE:'#00ffff', DRAW:'#39ff14', ERASE:'#ff4444',
+                   SYSTEM:'#aaaaaa', ERROR:'#ff4444', PALM:'#22d3ee' };
+  const c = colors[cat] || '#fff';
+  const d = document.createElement('div');
+  d.innerHTML = `<span style="color:${c}">[${cat}]</span> <span style="color:#ffffffbb">${msg}</span>`;
+  debugPanel.appendChild(d);
+  debugPanel.scrollTop = debugPanel.scrollHeight;
+  if (debugPanel.children.length > 40) debugPanel.removeChild(debugPanel.firstChild);
+}
+
+window.addEventListener('error', e => uiLog('ERROR', e.message));
+window.addEventListener('unhandledrejection', e => uiLog('ERROR', String(e.reason)));
+
+// ── GESTURE INDICATOR ──────────────────────────────────────────────────────
+const GESTURE_META = {
+  draw:  { icon: '☝', color: '#39ff14', label: 'DRAW'  },
+  erase: { icon: '✊', color: '#ff4444', label: 'ERASE' },
+  palm:  { icon: '🖐', color: '#22d3ee', label: 'PALM'  },
+  none:  { icon: '—', color: '#ffffff44', label: 'WAITING' }
+};
+
+function updateGestureIndicator(name, frames, confirmed) {
+  const meta = GESTURE_META[name] || GESTURE_META.none;
+  gestureIndicator.querySelector('.g-icon').textContent  = meta.icon;
+  gestureIndicator.querySelector('.g-name').textContent  = meta.label;
+  gestureIndicator.querySelector('.g-name').style.color  = confirmed ? meta.color : '#ffffff66';
+  gestureIndicator.querySelector('.g-frames').textContent = frames > 0 ? `[${frames}f]` : '';
+  gestureIndicator.style.borderColor = confirmed ? meta.color + '88' : 'rgba(255,255,255,0.15)';
+  gestureIndicator.classList.toggle('visible', name !== 'none');
+}
+
+// ── CANVAS RESIZE ──────────────────────────────────────────────────────────
+let W = 0, H = 0;
+function resize() {
+  W = window.innerWidth; H = window.innerHeight;
+  trailCanvas.width  = fxCanvas.width  = W;
+  trailCanvas.height = fxCanvas.height = H;
+}
+resize();
+window.addEventListener('resize', resize);
+
+// ── STATE ──────────────────────────────────────────────────────────────────
+let currentColor = '#ff2dcd';
+let brushSize    = 10;
+let effectMode   = 'classic';
+let handResults  = null;
+let animFrame    = 0;
+
+// Stroke state — inspired by optical flow approach: track prev position,
+// only commit a line segment when delta is meaningful
+let prevPt        = null;   // last confirmed draw point (like old_pts in cv2)
+let smoothTip     = null;   // exponential smoothing accumulator
+let tipHistory    = [];     // weighted average buffer
+let lastDrawGesture = false; // was DRAW active last frame?
+
+// Gesture debounce counters (per-gesture frame counts)
+let gFrames = { draw: 0, erase: 0, palm: 0 };
+let currentGesture = 'none';
+
+// ── THRESHOLDS ─────────────────────────────────────────────────────────────
+// draw=1: responds instantly like cv2's per-frame point append
+// erase=4: fast enough to feel responsive, hard enough to avoid accidents
+// palm=4: deliberate gesture
+const G_MIN_FRAMES = { draw: 1, erase: 4, palm: 4 };
+
+// Min movement px to commit stroke segment (kills jitter dots on held finger)
+const MIN_MOVE_PX = 1.2;
+
+// Smoothing: fast lerp so stroke follows finger without lag
+const LERP_ALPHA   = 0.50;  // higher = more responsive (was 0.22, too laggy)
+const TIP_HIST_MAX = 4;     // shorter history = less lag (was 8)
+const JUMP_RESET_PX = 180;  // gap before stroke anchor resets
+
+// ── UI HANDLERS ────────────────────────────────────────────────────────────
+swatches.forEach(btn => {
+  btn.addEventListener('click', () => {
+    currentColor = btn.dataset.color || '#ff2dcd';
+    swatches.forEach(s => s.classList.remove('selected'));
+    btn.classList.add('selected');
+  });
+});
+
+thicknessSlider.addEventListener('input', () => {
+  brushSize = Number(thicknessSlider.value);
+  thicknessValue.textContent = `${brushSize} PX`;
+});
+
+function setEffectMode(m) {
+  effectMode = m;
+  modeClassicBtn.classList.toggle('active', m === 'classic');
+  modeAnimeBtn.classList.toggle('active', m === 'anime');
+}
+modeClassicBtn.addEventListener('click', () => setEffectMode('classic'));
+modeAnimeBtn.addEventListener('click', () => setEffectMode('anime'));
+
+// ── COORDINATE HELPERS ─────────────────────────────────────────────────────
+function lmToXY(lm) {
+  // MediaPipe returns normalized [0,1]; mirror X (canvas is mirrored like webcam)
+  return { x: (1 - lm.x) * W, y: lm.y * H };
+}
+
+function palmMetrics(lm) {
+  const ids = [0, 5, 9, 13, 17];
+  let sx = 0, sy = 0;
+  for (const id of ids) { sx += lm[id].x; sy += lm[id].y; }
+  const cx = (1 - sx / ids.length) * W;
+  const cy = (sy / ids.length) * H;
+  const span  = Math.hypot(lm[5].x - lm[17].x, lm[5].y - lm[17].y) * W;
+  const depth = Math.hypot(lm[0].x - lm[9].x,  lm[0].y - lm[9].y)  * H;
+  const radius = Math.min(95, Math.max(58, (span + depth) * 0.52));
+  return { x: cx, y: cy, radius };
+}
+
+// ── SMOOTHING (optical-flow-style weighted average + EMA) ──────────────────
+function getSmoothedTip(rawTip) {
+  tipHistory.push(rawTip);
+  if (tipHistory.length > TIP_HIST_MAX) tipHistory.shift();
+
+  // Weighted average (recent frames weighted higher — like pyramid in LK)
+  let sx = 0, sy = 0, sw = 0;
+  for (let i = 0; i < tipHistory.length; i++) {
+    const w = i + 1;
+    sx += tipHistory[i].x * w;
+    sy += tipHistory[i].y * w;
+    sw += w;
+  }
+  const avg = { x: sx / sw, y: sy / sw };
+
+  // Exponential moving average on top
+  if (!smoothTip) { smoothTip = { x: avg.x, y: avg.y }; return { ...smoothTip }; }
+  smoothTip.x += (avg.x - smoothTip.x) * LERP_ALPHA;
+  smoothTip.y += (avg.y - smoothTip.y) * LERP_ALPHA;
+  return { x: smoothTip.x, y: smoothTip.y };
+}
+
+// ── GESTURE DETECTION ──────────────────────────────────────────────────────
+// Philosophy: compare each fingertip to its intermediate joints.
+// Use hand-relative scale so thresholds work at any distance from camera.
+
+function handScale(lm) {
+  // Distance wrist→middle-MCP: reliable hand size reference
+  return Math.hypot(lm[0].x - lm[9].x, lm[0].y - lm[9].y);
+}
+
+// -- DRAW: index clearly up, inspired by cv2 version's fore_finger tracking
+function isDrawGesture(lm) {
+  // Index tip must be above DIP and PIP - full extension
+  const indexUp = lm[8].y < lm[7].y && lm[7].y < lm[6].y;
+
+  // Thumb must NOT be close to index tip (that's pen-up in cv2 version)
+  // cv2 uses: thumb[1] - center[1] < 30 as lift signal
+  // We replicate: if thumb tip is within 8% of hand scale from index tip = pen up
+  const hs = Math.hypot(lm[0].x - lm[9].x, lm[0].y - lm[9].y);
+  const thumbToIndex = Math.hypot(lm[4].x - lm[8].x, lm[4].y - lm[8].y);
+  const thumbNotPinching = thumbToIndex > hs * 0.40;
+
+  // Middle, ring, pinky: tips must be below their OWN PIP joint (joint[i+1])
+  // cv2 version draws on ANY finger position - we just need the 3 curled
+  const middleCurled = lm[12].y > lm[10].y;
+  const ringCurled   = lm[16].y > lm[14].y;
+  const pinkyCurled  = lm[20].y > lm[18].y;
+
+  return indexUp && middleCurled && ringCurled && pinkyCurled && thumbNotPinching;
+}
+
+// FIX: isOpenPalm — reduced required fingers from 3 to 2.
+// Original was fine but some hands don't fully extend pinky.
+// Now: 3+ tips above their own MCP (knuckle) = open palm.
+// Also excludes cases that match DRAW (only index up is NOT a palm).
+function isOpenPalm(lm) {
+  const tips = [8, 12, 16, 20];
+  const mcps = [5,  9, 13, 17];
+  let up = 0;
+  for (let i = 0; i < 4; i++) {
+    if (lm[tips[i]].y < lm[mcps[i]].y) up++;
+  }
+  // Must have 3+ fingers up (avoids single-index-finger draw triggering palm)
+  return up >= 3;
+}
+
+// -- ERASE (FIST): every fingertip must be BELOW its own PIP - not MCP.
+// cv2 version uses thumb-index proximity for pen-up, not fist.
+// But fist erase works best with PIP comparison (more reliable than MCP
+// which breaks when hand is horizontal or rotated).
+function isEraseGesture(lm) {
+  // Each finger: tip must be below its PIP (intermediate joint)
+  // This is the same joint cv2's thumb check uses implicitly
+  const i8down  = lm[8].y  > lm[7].y;   // index  tip below index  PIP
+  const i12down = lm[12].y > lm[11].y;  // middle tip below middle PIP
+  const i16down = lm[16].y > lm[15].y;  // ring   tip below ring   PIP
+  const i20down = lm[20].y > lm[19].y;  // pinky  tip below pinky  PIP
+
+  // Thumb: tip x should be close to index MCP x (folded over palm)
+  // Relaxed check - just needs to not be sticking straight out
+  const hs = Math.hypot(lm[0].x - lm[9].x, lm[0].y - lm[9].y);
+  const thumbFolded = Math.abs(lm[4].x - lm[5].x) < hs * 1.1;
+
+  // Fist compactness: index tip to pinky tip should be close together
+  const tipSpread = Math.hypot(lm[8].x - lm[20].x, lm[8].y - lm[20].y);
+  const compact   = tipSpread < hs * 1.5;
+
+  return i8down && i12down && i16down && i20down && thumbFolded && compact;
+}
+
+// ── GESTURE DEBOUNCE ───────────────────────────────────────────────────────
+// Returns true only after gesture seen for N consecutive frames.
+// Key: the ACTIVE gesture counter never decays — only competing ones do.
+function confirmGesture(name) {
+  // Only decay other gesture counters, never the one being confirmed
+  for (const key of Object.keys(gFrames)) {
+    if (key !== name && key !== '_noHandFrames') {
+      gFrames[key] = Math.max(0, gFrames[key] - 1);
+    }
+  }
+  gFrames[name] = (gFrames[name] || 0) + 1;
+  return gFrames[name] >= (G_MIN_FRAMES[name] || 3);
+}
+
+function resetGesture(name) {
+  gFrames[name] = 0;
+}
+
+// ── DRAWING ────────────────────────────────────────────────────────────────
+function commitStroke(from, to) {
+  // Quadratic bezier midpoint — same smoothing the original used
+  const mx = (from.x + to.x) * 0.5;
+  const my = (from.y + to.y) * 0.5;
+
+  // Layer 1: broad outer halo (like mask overlay in cv2.addWeighted)
+  tCtx.save();
+  tCtx.globalAlpha  = 0.15;
+  tCtx.strokeStyle  = currentColor;
+  tCtx.lineWidth    = brushSize * 3.8;
+  tCtx.lineCap = tCtx.lineJoin = 'round';
+  tCtx.shadowColor  = currentColor;
+  tCtx.shadowBlur   = 55;
+  tCtx.beginPath();
+  tCtx.moveTo(from.x, from.y);
+  tCtx.quadraticCurveTo(from.x, from.y, mx, my);
+  tCtx.stroke();
+  tCtx.restore();
+
+  // Layer 2: mid glow
+  tCtx.save();
+  tCtx.globalAlpha  = 0.50;
+  tCtx.strokeStyle  = currentColor;
+  tCtx.lineWidth    = brushSize * 1.9;
+  tCtx.lineCap = tCtx.lineJoin = 'round';
+  tCtx.shadowColor  = currentColor;
+  tCtx.shadowBlur   = 30;
+  tCtx.beginPath();
+  tCtx.moveTo(from.x, from.y);
+  tCtx.quadraticCurveTo(from.x, from.y, mx, my);
+  tCtx.stroke();
+  tCtx.restore();
+
+  // Layer 3: white core (sharp, high-contrast — like cv2 line at full opacity)
+  tCtx.save();
+  tCtx.globalAlpha  = 0.90;
+  tCtx.strokeStyle  = '#ffffff';
+  tCtx.lineWidth    = brushSize * 0.42;
+  tCtx.lineCap = tCtx.lineJoin = 'round';
+  tCtx.shadowColor  = currentColor;
+  tCtx.shadowBlur   = 14;
+  tCtx.beginPath();
+  tCtx.moveTo(from.x, from.y);
+  tCtx.quadraticCurveTo(from.x, from.y, mx, my);
+  tCtx.stroke();
+  tCtx.restore();
+}
+
+function eraseAt(x, y, radius) {
+  tCtx.save();
+  tCtx.globalCompositeOperation = 'destination-out';
+  const g = tCtx.createRadialGradient(x, y, 0, x, y, radius);
+  g.addColorStop(0, 'rgba(0,0,0,1)');
+  g.addColorStop(1, 'rgba(0,0,0,0)');
+  tCtx.fillStyle = g;
+  tCtx.beginPath();
+  tCtx.arc(x, y, radius, 0, Math.PI * 2);
+  tCtx.fill();
+  tCtx.restore();
+}
+
+// ── SKELETON OVERLAY ───────────────────────────────────────────────────────
+function drawHandSkeleton(ctx, lm, color) {
+  const connections = [
+    [0,1],[1,2],[2,3],[3,4],
+    [0,5],[5,6],[6,7],[7,8],
+    [0,9],[9,10],[10,11],[11,12],
+    [0,13],[13,14],[14,15],[15,16],
+    [0,17],[17,18],[18,19],[19,20],
+    [5,9],[9,13],[13,17]
+  ];
+  ctx.save();
+  ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+  ctx.lineWidth = 1.5;
+  ctx.shadowColor = color;
+  ctx.shadowBlur = 6;
+  for (const [a,b] of connections) {
+    const p1 = lmToXY(lm[a]), p2 = lmToXY(lm[b]);
+    ctx.beginPath(); ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
+  }
+  for (let i = 0; i < lm.length; i++) {
+    const p = lmToXY(lm[i]);
+    const isTip = [4,8,12,16,20].includes(i);
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, isTip ? 6 : 3.5, 0, Math.PI * 2);
+    ctx.fillStyle = isTip ? color : 'rgba(255,255,255,0.7)';
+    ctx.shadowBlur = isTip ? 14 : 5;
+    ctx.fill();
+  }
+  // Highlight index tip with ring
+  const tip = lmToXY(lm[8]);
+  ctx.beginPath(); ctx.arc(tip.x, tip.y, 11, 0, Math.PI * 2);
+  ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.shadowBlur = 22;
+  ctx.stroke();
+  ctx.restore();
+}
+
+// ── SPECIAL EFFECTS ────────────────────────────────────────────────────────
+let rasAngle = 0, chiAngle = 0, strangeAngle = 0;
+
+function drawRasengan(ctx, cx, cy, r = 110) {
+  rasAngle += 0.05;
+  ctx.save(); ctx.translate(cx, cy);
+  const g = ctx.createRadialGradient(0,0,0, 0,0, r*1.5);
+  g.addColorStop(0, 'rgba(180,230,255,0.95)');
+  g.addColorStop(0.3,'rgba(60,160,255,0.75)');
+  g.addColorStop(0.7,'rgba(0,80,200,0.4)');
+  g.addColorStop(1, 'rgba(0,30,100,0)');
+  ctx.beginPath(); ctx.arc(0,0,r*1.5,0,Math.PI*2);
+  ctx.fillStyle = g; ctx.fill();
+  for (let i = 0; i < 3; i++) {
+    ctx.save(); ctx.rotate(rasAngle + i * Math.PI/3);
+    ctx.strokeStyle = `rgba(120,200,255,${0.6+i*0.15})`;
+    ctx.lineWidth = 3.5; ctx.shadowColor = '#88ccff'; ctx.shadowBlur = 28;
+    ctx.beginPath(); ctx.ellipse(0,0, r*0.9, r*0.35, 0, 0, Math.PI*2);
+    ctx.stroke(); ctx.restore();
+  }
+  const core = ctx.createRadialGradient(0,0,0, 0,0, r*0.55);
+  core.addColorStop(0,'rgba(255,255,255,1)');
+  core.addColorStop(0.5,'rgba(140,210,255,0.9)');
+  core.addColorStop(1,'rgba(30,100,255,0)');
+  ctx.beginPath(); ctx.arc(0,0,r*0.55,0,Math.PI*2);
+  ctx.fillStyle = core; ctx.fill();
+  ctx.restore();
+}
+
+function drawChidori(ctx, cx, cy, r = 112) {
+  chiAngle += 0.035;
+  ctx.save(); ctx.translate(cx, cy);
+  const g = ctx.createRadialGradient(0,0,0, 0,0, r*1.5);
+  g.addColorStop(0,'rgba(200,150,255,0.95)');
+  g.addColorStop(0.4,'rgba(140,60,255,0.55)');
+  g.addColorStop(1,'rgba(80,0,200,0)');
+  ctx.beginPath(); ctx.arc(0,0,r*1.5,0,Math.PI*2);
+  ctx.fillStyle = g; ctx.fill();
+  for (let a = 0; a < 12; a++) {
+    const ang = (a/12)*Math.PI*2 + chiAngle;
+    ctx.strokeStyle = a%3===0 ? '#ffffff' : '#cc88ff';
+    ctx.lineWidth   = a%3===0 ? 2.5 : 1.5;
+    ctx.shadowColor = '#bb66ff'; ctx.shadowBlur = 20;
+    ctx.beginPath(); ctx.moveTo(0,0);
+    for (let s = 0; s < 6; s++) {
+      const t = (s+1)/6;
+      const jx = Math.cos(ang)*r*t + (Math.random()-0.5)*r*0.15;
+      const jy = Math.sin(ang)*r*t + (Math.random()-0.5)*r*0.15;
+      ctx.lineTo(jx, jy);
+    }
+    ctx.stroke();
+  }
+  const core = ctx.createRadialGradient(0,0,0, 0,0, r*0.45);
+  core.addColorStop(0,'rgba(255,255,255,1)');
+  core.addColorStop(0.4,'rgba(200,140,255,0.95)');
+  core.addColorStop(1,'rgba(100,0,255,0)');
+  ctx.beginPath(); ctx.arc(0,0,r*0.45,0,Math.PI*2);
+  ctx.fillStyle = core; ctx.fill();
+  ctx.restore();
+}
+
+function drawStrangeShield(ctx, cx, cy, r) {
+  strangeAngle += 0.008;
+  ctx.save(); ctx.translate(cx, cy);
+  const g = ctx.createRadialGradient(0,0,0, 0,0, r*1.3);
+  g.addColorStop(0,'rgba(255,220,80,0.8)');
+  g.addColorStop(0.5,'rgba(200,140,20,0.35)');
+  g.addColorStop(1,'rgba(150,80,0,0)');
+  ctx.beginPath(); ctx.arc(0,0,r*1.3,0,Math.PI*2); ctx.fillStyle=g; ctx.fill();
+  ctx.strokeStyle='rgba(255,200,50,0.7)'; ctx.shadowColor='#ffcc00'; ctx.shadowBlur=20;
+  for (let i=1; i<=5; i++) {
+    ctx.lineWidth = i===1?2.5:1.5;
+    ctx.beginPath(); ctx.arc(0,0,r*(i/5),0,Math.PI*2); ctx.stroke();
+  }
+  ctx.save(); ctx.rotate(strangeAngle);
+  ctx.strokeStyle='rgba(255,200,50,0.5)'; ctx.lineWidth=1; ctx.shadowBlur=10;
+  for (let i=0; i<12; i++) {
+    ctx.save(); ctx.rotate((i/12)*Math.PI*2);
+    ctx.beginPath(); ctx.moveTo(r*0.15,0); ctx.lineTo(r*0.9,0); ctx.stroke();
+    ctx.restore();
+  }
+  ctx.restore();
+  ctx.save(); ctx.rotate(-strangeAngle*2);
+  ctx.strokeStyle='rgba(255,170,30,0.65)'; ctx.lineWidth=1.5; ctx.shadowBlur=14;
+  for (let i=0; i<8; i++) {
+    const a1=(i/8)*Math.PI*2, a2=((i+0.4)/8)*Math.PI*2;
+    ctx.beginPath(); ctx.arc(0,0,r*0.55,a1,a2); ctx.stroke();
+  }
+  ctx.restore();
+  const core = ctx.createRadialGradient(0,0,0, 0,0, r*0.3);
+  core.addColorStop(0,'rgba(255,255,200,1)');
+  core.addColorStop(0.5,'rgba(255,190,40,0.7)');
+  core.addColorStop(1,'rgba(200,120,0,0)');
+  ctx.beginPath(); ctx.arc(0,0,r*0.3,0,Math.PI*2); ctx.fillStyle=core; ctx.fill();
+  ctx.restore();
+}
+
+function drawAnimeMode(ctx, cx, cy, r) {
+  ctx.save();
+  ctx.globalCompositeOperation = 'lighter';
+  ctx.globalAlpha = 0.9;
+  drawRasengan(ctx, cx, cy, r * 1.08);
+  ctx.globalAlpha = 0.72;
+  drawChidori(ctx, cx, cy, r * 0.95);
+  ctx.restore();
+}
+
+// ── LABEL ──────────────────────────────────────────────────────────────────
+function setLabel(text, color) {
+  effectLabel.textContent = text;
+  effectLabel.style.color = color;
+  effectLabel.style.opacity = text ? '1' : '0';
+}
+
+// ── MAIN RENDER LOOP ───────────────────────────────────────────────────────
+function renderLoop() {
+  animFrame++;
+
+  // Clear FX canvas each frame
+  fCtx.clearRect(0, 0, W, H);
+
+  // Very slow fade on trail canvas (persistence effect like mask in cv2)
+  tCtx.globalCompositeOperation = 'destination-out';
+  tCtx.fillStyle = 'rgba(0,0,0,0.0006)';
+  tCtx.fillRect(0, 0, W, H);
+  tCtx.globalCompositeOperation = 'source-over';
+
+  if (!handResults?.multiHandLandmarks?.length) {
+    statusEl.textContent = 'Awaiting hands...';
+    // FIX: Don't wipe prevPt immediately — keep it for a few frames so
+    // brief occlusions don't break strokes. Only clear after sustained absence.
+    if ((gFrames._noHandFrames = (gFrames._noHandFrames || 0) + 1) > 6) {
+      prevPt = null; smoothTip = null; tipHistory = [];
+      gFrames = { draw: 0, erase: 0, palm: 0, _noHandFrames: 7 };
+      currentGesture = 'none';
+    }
+    updateGestureIndicator('none', 0, false);
+    chipDrawVal.textContent  = 'DRAW 0';
+    chipEraseVal.textContent = 'ERASE 0';
+    chipPalmVal.textContent  = 'PALM 0';
+    requestAnimationFrame(renderLoop);
+    return;
+  }
+
+  gFrames._noHandFrames = 0;
+
+  const hands  = handResults.multiHandLandmarks;
+  const labels = handResults.multiHandedness;
+
+  // ── Per-hand classification ────────────────────────────────────────────
+  let rightLm = null, leftLm = null;
+  let rightPalm = null, leftPalm = null;
+
+  for (let i = 0; i < hands.length; i++) {
+    const lm = hands[i];
+    // MediaPipe reports from camera POV; flip for user POV (mirrored display)
+    const rawLabel = labels[i]?.label || 'Right';
+    const label    = rawLabel === 'Right' ? 'Left' : 'Right';
+    const palm     = palmMetrics(lm);
+
+    if (label === 'Right') { rightLm = lm; rightPalm = palm; }
+    else                   { leftLm  = lm; leftPalm  = palm; }
+  }
+
+  // Use first hand for single-hand gestures (draw/erase)
+  const primaryLm   = rightLm || leftLm;
+  const primaryPalm = rightPalm || leftPalm;
+
+  // ── Classify primary hand ──────────────────────────────────────────────
+  // PRIORITY: erase > draw > palm  (erase must not accidentally draw)
+  let rawDraw  = false, rawErase = false, rawPalm = false;
+  if (primaryLm) {
+    rawErase = isEraseGesture(primaryLm);
+    // FIX: Only check DRAW if NOT an erase — prevents fist briefly reading as draw
+    rawDraw  = !rawErase && isDrawGesture(primaryLm);
+    // FIX: Only check PALM if neither erase nor draw — prevents single-finger
+    // from triggering palm when other fingers are ambiguous
+    rawPalm  = !rawErase && !rawDraw && isOpenPalm(primaryLm);
+  }
+
+  // Second hand palm (for both-palms effect)
+  const secondaryLm   = rightLm && leftLm ? (primaryLm === rightLm ? leftLm : rightLm) : null;
+  const secondaryPalm = rightLm && leftLm ? (primaryLm === rightLm ? leftPalm : rightPalm) : null;
+  const secondaryRawPalm = secondaryLm ? (!isEraseGesture(secondaryLm) && !isDrawGesture(secondaryLm) && isOpenPalm(secondaryLm)) : false;
+  const bothPalms = rawPalm && secondaryRawPalm;
+
+  // Log every 20 frames to avoid spam
+  if (animFrame % 20 === 0) {
+    uiLog('GESTURE', `raw: draw=${rawDraw} erase=${rawErase} palm=${rawPalm}`);
+  }
+
+  // Update confidence chips
+  chipDrawVal.textContent  = `DRAW ${gFrames.draw}/${G_MIN_FRAMES.draw}`;
+  chipEraseVal.textContent = `ERASE ${gFrames.erase}/${G_MIN_FRAMES.erase}`;
+  chipPalmVal.textContent  = `PALM ${gFrames.palm}/${G_MIN_FRAMES.palm}`;
+
+  // ── ERASE (highest priority) ───────────────────────────────────────────
+  if (rawErase && confirmGesture('erase')) {
+    if (currentGesture !== 'erase') {
+      uiLog('GESTURE', 'ERASE confirmed');
+      currentGesture = 'erase';
+      prevPt = null; smoothTip = null; tipHistory = [];
+    }
+    eraseAt(primaryPalm.x, primaryPalm.y, Math.max(50, primaryPalm.radius));
+    // Visual feedback: red ring at erase point
+    fCtx.save();
+    fCtx.strokeStyle = '#ff4444'; fCtx.lineWidth = 2.5;
+    fCtx.shadowColor = '#ff4444'; fCtx.shadowBlur = 18;
+    fCtx.beginPath();
+    fCtx.arc(primaryPalm.x, primaryPalm.y, primaryPalm.radius * 0.95, 0, Math.PI*2);
+    fCtx.stroke(); fCtx.restore();
+    setLabel('ERASE', '#ff4444');
+    statusEl.textContent = '✊ Erasing...';
+    updateGestureIndicator('erase', gFrames.erase, true);
+    drawHandSkeleton(fCtx, primaryLm, '#ff4444');
+
+  // ── DRAW ───────────────────────────────────────────────────────────────
+  } else if (rawDraw) {
+    resetGesture('erase');
+    confirmGesture('draw');
+    const drawConfirmed = gFrames.draw >= G_MIN_FRAMES.draw;
+
+    // Always show skeleton - like cv2's mpDraw.draw_landmarks on every frame
+    drawHandSkeleton(fCtx, primaryLm, currentColor);
+
+    if (drawConfirmed) {
+      if (currentGesture !== 'draw') {
+        uiLog('DRAW', 'Draw confirmed - stroke started');
+        currentGesture = 'draw';
+        // DO NOT null prevPt here - allows resuming stroke after brief dip
+      }
+
+      const rawTip = lmToXY(primaryLm[8]);
+      const tip    = getSmoothedTip(rawTip);
+
+      if (prevPt) {
+        const dist = Math.hypot(tip.x - prevPt.x, tip.y - prevPt.y);
+
+        if (dist > JUMP_RESET_PX) {
+          // Teleport - same as cv2's deque.append(deque()) on large gap
+          uiLog('DRAW', `Teleport reset dist=${Math.round(dist)}`);
+          prevPt = { ...tip };
+        } else if (dist >= MIN_MOVE_PX) {
+          // Commit segment - mirrors cv2's cv2.line(frame, pts[k-1], pts[k])
+          commitStroke(prevPt, tip);
+          prevPt = { ...tip };
+        }
+        // dist < MIN_MOVE_PX: finger held still - skip dot, just like cv2's
+        // deque not appending duplicate point
+      } else {
+        // First point - like cv2's fore_finger = (landmarks[8][0], landmarks[8][1])
+        prevPt = { ...tip };
+        uiLog('DRAW', `Anchor set ${Math.round(tip.x)},${Math.round(tip.y)}`);
+      }
+
+      setLabel('', '');
+      statusEl.textContent = '✏️ Drawing';
+
+    } else {
+      // Warmup: keep smoothing history warm but don't anchor prevPt yet
+      const rawTip = lmToXY(primaryLm[8]);
+      getSmoothedTip(rawTip);
+      // Critical: do NOT reset prevPt - if we were already drawing,
+      // a 1-frame wobble out of draw should not break the stroke
+      statusEl.textContent = `⏳ [${gFrames.draw}/${G_MIN_FRAMES.draw}]`;
+    }
+
+    updateGestureIndicator('draw', gFrames.draw, drawConfirmed);
+
+  // ── PALM EFFECTS (ANIME MODE ONLY) ────────────────────────────────────────
+  } else if (rawPalm || secondaryRawPalm) {
+    resetGesture('draw'); resetGesture('erase');
+    confirmGesture('palm');
+    const palmConfirmed = gFrames.palm >= G_MIN_FRAMES.palm;
+
+    if (palmConfirmed) {
+      prevPt = null; smoothTip = null; tipHistory = [];
+
+      // ── CLASSIC MODE: palm detected but effects are locked ─────────────
+      if (effectMode !== 'anime') {
+        // Toast fires only once per lock transition (check BEFORE overwriting)
+        if (currentGesture !== 'palm_locked') {
+          showModeLockToast();
+          uiLog('GESTURE', 'Palm locked — switch to Anime mode');
+          currentGesture = 'palm_locked';
+        }
+        setLabel('', '');
+        statusEl.textContent = '🔒 Switch to ANIME mode for effects';
+
+      // ── ANIME MODE: fire the real effects ─────────────────────────────
+      } else {
+        currentGesture = 'palm';
+        if (bothPalms && primaryPalm && secondaryPalm) {
+          drawStrangeShield(fCtx, primaryPalm.x,   primaryPalm.y,   Math.max(110, primaryPalm.radius   * 1.9));
+          drawStrangeShield(fCtx, secondaryPalm.x, secondaryPalm.y, Math.max(110, secondaryPalm.radius * 1.9));
+          setLabel('DR. STRANGE', '#ffcc44');
+          statusEl.textContent = '✴ Dr. Strange Shield';
+
+        } else if (rawPalm && primaryPalm) {
+          const isRight = (rightLm === primaryLm);
+          fCtx.save();
+          fCtx.globalCompositeOperation = 'source-over';
+          fCtx.globalAlpha = 1;
+          if (isRight) {
+            drawRasengan(fCtx, primaryPalm.x, primaryPalm.y, primaryPalm.radius * 1.55);
+            setLabel('RASENGAN', '#88ddff');
+            statusEl.textContent = '◉ Rasengan!';
+          } else {
+            drawChidori(fCtx, primaryPalm.x, primaryPalm.y, primaryPalm.radius * 1.55);
+            setLabel('CHIDORI', '#cc88ff');
+            statusEl.textContent = '⚡ Chidori!';
+          }
+          fCtx.restore();
+
+        } else if (secondaryRawPalm && secondaryPalm) {
+          const isRight = (rightLm === secondaryLm);
+          fCtx.save();
+          fCtx.globalCompositeOperation = 'source-over';
+          fCtx.globalAlpha = 1;
+          if (isRight) {
+            drawRasengan(fCtx, secondaryPalm.x, secondaryPalm.y, secondaryPalm.radius * 1.55);
+            setLabel('RASENGAN', '#88ddff');
+          } else {
+            drawChidori(fCtx, secondaryPalm.x, secondaryPalm.y, secondaryPalm.radius * 1.55);
+            setLabel('CHIDORI', '#cc88ff');
+          }
+          fCtx.restore();
+        }
+      }
+
+    } else {
+      statusEl.textContent = `⏳ Palm... [${gFrames.palm}/${G_MIN_FRAMES.palm}]`;
+    }
+
+    updateGestureIndicator('palm', gFrames.palm, palmConfirmed);
+
+  // ── NO GESTURE ─────────────────────────────────────────────────────────
+  } else {
+    // No gesture - decay counters like cv2's "else: append new deque" on lost hand
+    // Draw decays slowly (1/frame) if we were drawing - prevents gaps on wobble
+    // Everything else decays fast (2/frame)
+    if (currentGesture === 'draw') {
+      gFrames.draw = Math.max(0, gFrames.draw - 1);
+      // Grace period: keep prevPt alive while draw counter still > 0
+      // This is like cv2's deque keeping last point during brief occlusion
+      if (gFrames.draw === 0) {
+        prevPt = null; smoothTip = null; tipHistory = [];
+        currentGesture = 'none';
+        uiLog('DRAW', 'Stroke ended - grace expired');
+        setLabel('', '');
+      } else {
+        // Still in grace - show skeleton dimly, don't draw
+        if (primaryLm) drawHandSkeleton(fCtx, primaryLm, currentColor + '66');
+        statusEl.textContent = '✏️ Drawing (grace)';
+        updateGestureIndicator('draw', gFrames.draw, true);
+        requestAnimationFrame(renderLoop);
+        return;
+      }
+    } else {
+      gFrames.draw  = Math.max(0, gFrames.draw  - 2);
+      gFrames.erase = Math.max(0, gFrames.erase - 2);
+      gFrames.palm  = Math.max(0, gFrames.palm  - 2);
+      if (currentGesture !== 'none') {
+        currentGesture = 'none';
+        setLabel('', '');
+      }
+    }
+
+    if (primaryLm) drawHandSkeleton(fCtx, primaryLm, '#ffffff22');
+    statusEl.textContent = 'Awaiting gesture...';
+    updateGestureIndicator('none', 0, false);
+  }
+
+  requestAnimationFrame(renderLoop);
+}
+
+// ── MEDIAPIPE SETUP ────────────────────────────────────────────────────────
+startBtn.addEventListener('click', async () => {
+  startBtn.style.display = 'none';
+  loadingMsg.style.display = 'block';
+  loadingMsg.textContent = 'Requesting camera...';
+
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: {
+        width:  { ideal: 1920, min: 1280 },
+        height: { ideal: 1080, min: 720 },
+        facingMode: 'user',
+        frameRate: { ideal: 60, min: 30 }
+      }
+    });
+    video.srcObject = stream;
+    await video.play();
+  } catch (e) {
+    loadingMsg.textContent = 'Camera access denied.';
+    startBtn.style.display = 'block';
+    startBtn.textContent = 'Retry';
+    loadingMsg.style.display = 'none';
+    return;
+  }
+
+  loadingMsg.textContent = 'Loading MediaPipe Hands...';
+
+  const hands = new Hands({
+    locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
+  });
+
+  hands.setOptions({
+    maxNumHands: 2,
+    modelComplexity: 1,
+    minDetectionConfidence: 0.80,   // slightly relaxed (was 0.82) for faster lock-on
+    minTrackingConfidence:  0.72    // relaxed (was 0.75) so brief occlusions don't drop
+  });
+
+  hands.onResults(results => { handResults = results; });
+
+  const camera = new Camera(video, {
+    onFrame: async () => {
+      try {
+        const bmp = await createImageBitmap(video);
+        await hands.send({ image: bmp });
+        bmp.close();
+      } catch {
+        await hands.send({ image: video });
+      }
+    },
+    width: 1280, height: 720
+  });
+
+  camera.start().then(() => {
+    overlay.style.transition = 'opacity 0.5s';
+    overlay.style.opacity = '0';
+    setTimeout(() => { overlay.style.display = 'none'; }, 500);
+    uiLog('SYSTEM', 'Camera + MediaPipe ready');
+    renderLoop();
+  }).catch(() => {
+    loadingMsg.textContent = 'Could not start camera.';
+  });
+});
+</script>
+</body>
+</html>

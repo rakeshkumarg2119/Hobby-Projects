@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSA Visualizer</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230a0a0f'/><rect x='4' y='12' width='8' height='8' rx='2' fill='none' stroke='%237c3aed' stroke-width='1.5'/><rect x='14' y='8' width='8' height='8' rx='2' fill='none' stroke='%2306b6d4' stroke-width='1.5'/><rect x='20' y='16' width='8' height='8' rx='2' fill='none' stroke='%237c3aed' stroke-width='1.5'/><line x1='12' y1='16' x2='14' y2='12' stroke='%2364748b' stroke-width='1'/><line x1='22' y1='16' x2='24' y2='16' stroke='%2364748b' stroke-width='1'/></svg>">
+<link rel="stylesheet" href="data.css">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="header">
+  <h1>DSA Visualizer</h1>
+  <p>Data Structures & Algorithms — Interactive Step-by-Step Visualizations</p>
+</div>
+
+<nav class="nav">
+  <button class="nav-btn active" onclick="showSection('ds-array', this)">Array</button>
+  <button class="nav-btn" onclick="showSection('ds-ll', this)">Linked List</button>
+  <button class="nav-btn" onclick="showSection('ds-dll', this)">Doubly LL</button>
+  <button class="nav-btn" onclick="showSection('ds-tree', this)">Binary Tree</button>
+  <button class="nav-btn" onclick="showSection('ds-bst', this)">BST</button>
+  <button class="nav-btn" onclick="showSection('ds-graph', this)">Graph</button>
+  <button class="nav-btn" onclick="showSection('sort-insertion', this)">Insertion Sort</button>
+  <button class="nav-btn" onclick="showSection('sort-bubble', this)">Bubble Sort</button>
+  <button class="nav-btn" onclick="showSection('sort-selection', this)">Selection Sort</button>
+  <button class="nav-btn" onclick="showSection('sort-merge', this)">Merge Sort</button>
+  <button class="nav-btn" onclick="showSection('sort-quick', this)">Quick Sort</button>
+  <button class="nav-btn" onclick="showSection('sort-shell', this)">Shell Sort</button>
+  <button class="nav-btn" onclick="showSection('sort-radix', this)">Radix Sort</button>
+  <button class="nav-btn" onclick="showSection('sort-bucket', this)">Bucket Sort</button>
+  <button class="nav-btn" onclick="showSection('search-binary', this)">Binary Search</button>
+  <button class="nav-btn" onclick="showSection('search-fibonacci', this)">Fibonacci Search</button>
+</nav>
+
+<div class="container">
+
+<!-- ═══════════════════════════════════════════════════════ ARRAY ═══ -->
+<div id="ds-array" class="section active">
+  <div class="section-title">Array <span>[]</span></div>
+  <div class="section-desc">A contiguous block of memory storing elements of the same type, accessible via index in O(1).</div>
+
+  <div class="card">
+    <div class="card-title">Operations</div>
+    <div class="controls">
+      <input type="number" id="arr-input" placeholder="Value" value="42">
+      <input type="number" id="arr-idx" placeholder="Index" value="0">
+      <button class="btn btn-primary" onclick="arrInsert()">Insert</button>
+      <button class="btn btn-secondary" onclick="arrSearch()">Search</button>
+      <button class="btn btn-danger" onclick="arrDelete()">Delete at Index</button>
+      <button class="btn btn-warning" onclick="arrReset()">Reset</button>
+      <button class="btn btn-secondary" onclick="arrTraverse()">Traverse</button>
+    </div>
+    <div class="viz-label">Array State</div>
+    <div class="viz-area">
+      <div class="array-viz" id="arr-viz"></div>
+    </div>
+    <div class="log" id="arr-log"></div>
+  </div>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title">Before / After — Insert at index 2</div>
+      <div class="before-after">
+        <div class="ba-panel">
+          <div class="ba-label before">Before</div>
+          <div class="array-viz">
+            <div class="array-cell"><div class="array-box">10</div><div class="array-index">[0]</div></div>
+            <div class="array-cell"><div class="array-box">20</div><div class="array-index">[1]</div></div>
+            <div class="array-cell"><div class="array-box">30</div><div class="array-index">[2]</div></div>
+            <div class="array-cell"><div class="array-box">40</div><div class="array-index">[3]</div></div>
+          </div>
+        </div>
+        <div class="ba-panel">
+          <div class="ba-label after">After insert 99 at [2]</div>
+          <div class="array-viz">
+            <div class="array-cell"><div class="array-box">10</div><div class="array-index">[0]</div></div>
+            <div class="array-cell"><div class="array-box">20</div><div class="array-index">[1]</div></div>
+            <div class="array-cell"><div class="array-box highlight">99</div><div class="array-index">[2]</div></div>
+            <div class="array-cell"><div class="array-box">30</div><div class="array-index">[3]</div></div>
+            <div class="array-cell"><div class="array-box">40</div><div class="array-index">[4]</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Complexity</div>
+      <table class="complexity-table">
+        <tr><th>Operation</th><th>Time</th><th>Space</th></tr>
+        <tr><td>Access</td><td class="o-n">O(1)</td><td class="o-n">O(1)</td></tr>
+        <tr><td>Search</td><td class="o-nlogn">O(n)</td><td class="o-n">O(1)</td></tr>
+        <tr><td>Insert</td><td class="o-nlogn">O(n)</td><td class="o-n">O(1)</td></tr>
+        <tr><td>Delete</td><td class="o-nlogn">O(n)</td><td class="o-n">O(1)</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ LINKED LIST ═══ -->
+<div id="ds-ll" class="section">
+  <div class="section-title">Linked List <span>→</span></div>
+  <div class="section-desc">Each node contains data and a pointer to the next node. Dynamic size, O(1) insert at head.</div>
+
+  <div class="card">
+    <div class="card-title">Operations</div>
+    <div class="controls">
+      <input type="number" id="ll-input" placeholder="Value" value="5">
+      <button class="btn btn-primary" onclick="llInsertHead()">Insert Head</button>
+      <button class="btn btn-secondary" onclick="llInsertTail()">Insert Tail</button>
+      <button class="btn btn-secondary" onclick="llSearch()">Search</button>
+      <button class="btn btn-danger" onclick="llDelete()">Delete</button>
+      <button class="btn btn-warning" onclick="llTraverse()">Traverse</button>
+      <button class="btn btn-secondary" onclick="llReset()">Reset</button>
+    </div>
+    <div class="viz-label">Linked List State</div>
+    <div class="viz-area">
+      <div class="linked-viz" id="ll-viz"></div>
+    </div>
+    <div class="log" id="ll-log"></div>
+  </div>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title">Insert at Head — Before/After</div>
+      <div class="before-after">
+        <div class="ba-panel">
+          <div class="ba-label before">Before</div>
+          <div class="linked-viz" style="transform:scale(0.85);transform-origin:left;">
+            <div class="ll-node"><div class="ll-box"><div class="ll-val">10</div><div class="ll-next">next→</div></div></div>
+            <div class="ll-arrow"></div>
+            <div class="ll-node"><div class="ll-box"><div class="ll-val">20</div><div class="ll-next">next→</div></div></div>
+            <div class="ll-arrow"></div>
+            <div class="ll-null">NULL</div>
+          </div>
+        </div>
+        <div class="ba-panel">
+          <div class="ba-label after">After insert(5) at head</div>
+          <div class="linked-viz" style="transform:scale(0.85);transform-origin:left;">
+            <div class="ll-node"><div class="ll-box highlight"><div class="ll-val" style="color:var(--highlight)">5</div><div class="ll-next">next→</div></div></div>
+            <div class="ll-arrow"></div>
+            <div class="ll-node"><div class="ll-box"><div class="ll-val">10</div><div class="ll-next">next→</div></div></div>
+            <div class="ll-arrow"></div>
+            <div class="ll-node"><div class="ll-box"><div class="ll-val">20</div><div class="ll-next">next→</div></div></div>
+            <div class="ll-arrow"></div>
+            <div class="ll-null">NULL</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Complexity</div>
+      <table class="complexity-table">
+        <tr><th>Operation</th><th>Time</th></tr>
+        <tr><td>Insert Head</td><td class="o-n">O(1)</td></tr>
+        <tr><td>Insert Tail</td><td class="o-nlogn">O(n)</td></tr>
+        <tr><td>Search</td><td class="o-nlogn">O(n)</td></tr>
+        <tr><td>Delete</td><td class="o-nlogn">O(n)</td></tr>
+        <tr><td>Traverse</td><td class="o-nlogn">O(n)</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ DOUBLY LINKED LIST ═══ -->
+<div id="ds-dll" class="section">
+  <div class="section-title">Doubly Linked List <span>⇄</span></div>
+  <div class="section-desc">Each node has prev and next pointers, enabling O(1) deletion when node reference is known.</div>
+
+  <div class="card">
+    <div class="card-title">Operations</div>
+    <div class="controls">
+      <input type="number" id="dll-input" placeholder="Value" value="7">
+      <button class="btn btn-primary" onclick="dllInsertHead()">Insert Head</button>
+      <button class="btn btn-secondary" onclick="dllInsertTail()">Insert Tail</button>
+      <button class="btn btn-secondary" onclick="dllSearch()">Search</button>
+      <button class="btn btn-danger" onclick="dllDelete()">Delete</button>
+      <button class="btn btn-secondary" onclick="dllReset()">Reset</button>
+    </div>
+    <div class="viz-label">Doubly Linked List State</div>
+    <div class="viz-area">
+      <div class="linked-viz" id="dll-viz"></div>
+    </div>
+    <div class="log" id="dll-log"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ BINARY TREE ═══ -->
+<div id="ds-tree" class="section">
+  <div class="section-title">Binary Tree <span>⧖</span></div>
+  <div class="section-desc">Each node has at most two children. Supports In-order, Pre-order, Post-order traversals.</div>
+
+  <div class="card">
+    <div class="card-title">Operations</div>
+    <div class="controls">
+      <input type="number" id="bt-input" placeholder="Value" value="25">
+      <button class="btn btn-primary" onclick="btInsert()">Insert</button>
+      <button class="btn btn-secondary" onclick="btInorder()">In-order</button>
+      <button class="btn btn-secondary" onclick="btPreorder()">Pre-order</button>
+      <button class="btn btn-secondary" onclick="btPostorder()">Post-order</button>
+      <button class="btn btn-secondary" onclick="btBFS()">BFS</button>
+      <button class="btn btn-warning" onclick="btReset()">Reset</button>
+    </div>
+    <div class="viz-area">
+      <svg class="tree-svg" id="bt-svg"></svg>
+    </div>
+    <div class="log" id="bt-log"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ BST ═══ -->
+<div id="ds-bst" class="section">
+  <div class="section-title">Binary Search Tree <span>◈</span></div>
+  <div class="section-desc">Left child &lt; parent &lt; right child. Enables O(log n) search, insert, delete on average.</div>
+
+  <div class="card">
+    <div class="card-title">Operations</div>
+    <div class="controls">
+      <input type="number" id="bst-input" placeholder="Value" value="35">
+      <button class="btn btn-primary" onclick="bstInsert()">Insert</button>
+      <button class="btn btn-secondary" onclick="bstSearch()">Search</button>
+      <button class="btn btn-danger" onclick="bstDelete()">Delete</button>
+      <button class="btn btn-secondary" onclick="bstInorder()">In-order</button>
+      <button class="btn btn-warning" onclick="bstReset()">Reset</button>
+    </div>
+    <div class="viz-area">
+      <svg class="tree-svg" id="bst-svg"></svg>
+    </div>
+    <div class="log" id="bst-log"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">BST Property Illustration</div>
+    <div class="before-after">
+      <div class="ba-panel">
+        <div class="ba-label before">Before delete(30)</div>
+        <p style="font-size:0.75rem;color:var(--text-muted);margin-bottom:0.5rem">Tree with two children at node 30</p>
+        <svg viewBox="0 0 300 180" style="width:100%;height:180px">
+          <line x1="150" y1="30" x2="90" y2="80" stroke="#2a2a3f" stroke-width="1.5"/>
+          <line x1="150" y1="30" x2="210" y2="80" stroke="#2a2a3f" stroke-width="1.5"/>
+          <line x1="90" y1="80" x2="60" y2="130" stroke="#2a2a3f" stroke-width="1.5"/>
+          <line x1="90" y1="80" x2="120" y2="130" stroke="#2a2a3f" stroke-width="1.5"/>
+          <circle cx="150" cy="30" r="20" fill="#1e1e2e" stroke="#7c3aed" stroke-width="2"/>
+          <text x="150" y="30" fill="#e2e8f0" font-family="monospace" font-size="11" text-anchor="middle" dominant-baseline="middle">50</text>
+          <circle cx="90" cy="80" r="20" fill="rgba(239,68,68,0.2)" stroke="#ef4444" stroke-width="2"/>
+          <text x="90" y="80" fill="#ef4444" font-family="monospace" font-size="11" text-anchor="middle" dominant-baseline="middle">30</text>
+          <circle cx="210" cy="80" r="20" fill="#1e1e2e" stroke="#7c3aed" stroke-width="2"/>
+          <text x="210" y="80" fill="#e2e8f0" font-family="monospace" font-size="11" text-anchor="middle" dominant-baseline="middle">70</text>
+          <circle cx="60" cy="130" r="20" fill="#1e1e2e" stroke="#7c3aed" stroke-width="2"/>
+          <text x="60" y="130" fill="#e2e8f0" font-family="monospace" font-size="11" text-anchor="middle" dominant-baseline="middle">20</text>
+          <circle cx="120" cy="130" r="20" fill="#1e1e2e" stroke="#7c3aed" stroke-width="2"/>
+          <text x="120" y="130" fill="#e2e8f0" font-family="monospace" font-size="11" text-anchor="middle" dominant-baseline="middle">40</text>
+        </svg>
+      </div>
+      <div class="ba-panel">
+        <div class="ba-label after">After delete(30) — replaced by in-order successor 40</div>
+        <svg viewBox="0 0 300 180" style="width:100%;height:180px">
+          <line x1="150" y1="30" x2="90" y2="80" stroke="#2a2a3f" stroke-width="1.5"/>
+          <line x1="150" y1="30" x2="210" y2="80" stroke="#2a2a3f" stroke-width="1.5"/>
+          <line x1="90" y1="80" x2="60" y2="130" stroke="#2a2a3f" stroke-width="1.5"/>
+          <circle cx="150" cy="30" r="20" fill="#1e1e2e" stroke="#7c3aed" stroke-width="2"/>
+          <text x="150" y="30" fill="#e2e8f0" font-family="monospace" font-size="11" text-anchor="middle" dominant-baseline="middle">50</text>
+          <circle cx="90" cy="80" r="20" fill="rgba(34,197,94,0.2)" stroke="#22c55e" stroke-width="2"/>
+          <text x="90" y="80" fill="#22c55e" font-family="monospace" font-size="11" text-anchor="middle" dominant-baseline="middle">40</text>
+          <circle cx="210" cy="80" r="20" fill="#1e1e2e" stroke="#7c3aed" stroke-width="2"/>
+          <text x="210" y="80" fill="#e2e8f0" font-family="monospace" font-size="11" text-anchor="middle" dominant-baseline="middle">70</text>
+          <circle cx="60" cy="130" r="20" fill="#1e1e2e" stroke="#7c3aed" stroke-width="2"/>
+          <text x="60" y="130" fill="#e2e8f0" font-family="monospace" font-size="11" text-anchor="middle" dominant-baseline="middle">20</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ GRAPH ═══ -->
+<div id="ds-graph" class="section">
+  <div class="section-title">Graph <span>◉</span></div>
+  <div class="section-desc">A set of vertices connected by edges. Supports BFS and DFS traversals.</div>
+
+  <div class="card">
+    <div class="card-title">Operations</div>
+    <div class="controls">
+      <input type="text" id="graph-from" placeholder="From" value="A" style="width:70px">
+      <input type="text" id="graph-to" placeholder="To" value="B" style="width:70px">
+      <input type="number" id="graph-weight" placeholder="Weight" value="1" style="width:80px">
+      <button class="btn btn-primary" onclick="graphAddEdge()">Add Edge</button>
+      <button class="btn btn-secondary" onclick="graphBFS()">BFS</button>
+      <button class="btn btn-secondary" onclick="graphDFS()">DFS</button>
+      <button class="btn btn-warning" onclick="graphReset()">Reset</button>
+    </div>
+    <div class="viz-area">
+      <svg class="graph-svg" id="graph-svg"></svg>
+    </div>
+    <div class="log" id="graph-log"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ INSERTION SORT ═══ -->
+<div id="sort-insertion" class="section">
+  <div class="section-title">Insertion Sort</div>
+  <div class="section-desc">Builds sorted array one item at a time. O(n²) worst case, O(n) best case (already sorted).</div>
+
+  <div class="card">
+    <div class="card-title">Interactive Sort</div>
+    <div class="controls">
+      <input type="text" id="ins-input" placeholder="e.g. 5,3,8,1,9" value="5,3,8,1,9,2,7,4">
+      <button class="btn btn-primary" onclick="insertionSortRun()">▶ Run Sort</button>
+      <button class="btn btn-secondary" onclick="insertionSortStep()">Step →</button>
+      <button class="btn btn-warning" onclick="insertionSortReset()">Reset</button>
+      <div class="speed-control">Speed: <input type="range" min="100" max="1500" value="600" id="ins-speed" style="width:80px"></div>
+    </div>
+    <div class="viz-label">Current State</div>
+    <div class="viz-area">
+      <div class="bar-viz" id="ins-bars"></div>
+    </div>
+    <div class="before-after" style="margin-top:1rem">
+      <div class="ba-panel"><div class="ba-label before">Before</div><div class="array-viz" id="ins-before"></div></div>
+      <div class="ba-panel"><div class="ba-label after">After</div><div class="array-viz" id="ins-after"></div></div>
+    </div>
+    <div class="iteration-steps" id="ins-steps"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ BUBBLE SORT ═══ -->
+<div id="sort-bubble" class="section">
+  <div class="section-title">Bubble Sort</div>
+  <div class="section-desc">Repeatedly swaps adjacent elements if out of order. Largest elements "bubble" to the end each pass.</div>
+
+  <div class="card">
+    <div class="card-title">Interactive Sort</div>
+    <div class="controls">
+      <input type="text" id="bub-input" placeholder="e.g. 6,4,9,2,7" value="6,4,9,2,7,1,8,3">
+      <button class="btn btn-primary" onclick="bubbleSortRun()">▶ Run Sort</button>
+      <button class="btn btn-secondary" onclick="bubbleSortStep()">Step →</button>
+      <button class="btn btn-warning" onclick="bubbleSortReset()">Reset</button>
+      <div class="speed-control">Speed: <input type="range" min="100" max="1500" value="600" id="bub-speed" style="width:80px"></div>
+    </div>
+    <div class="viz-area"><div class="bar-viz" id="bub-bars"></div></div>
+    <div class="before-after" style="margin-top:1rem">
+      <div class="ba-panel"><div class="ba-label before">Before</div><div class="array-viz" id="bub-before"></div></div>
+      <div class="ba-panel"><div class="ba-label after">After</div><div class="array-viz" id="bub-after"></div></div>
+    </div>
+    <div class="iteration-steps" id="bub-steps"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ SELECTION SORT ═══ -->
+<div id="sort-selection" class="section">
+  <div class="section-title">Selection Sort</div>
+  <div class="section-desc">Finds the minimum element and places it at the beginning. Exactly n-1 swaps total.</div>
+
+  <div class="card">
+    <div class="card-title">Interactive Sort</div>
+    <div class="controls">
+      <input type="text" id="sel-input" placeholder="e.g. 7,2,9,4" value="7,2,9,4,1,8,3,6">
+      <button class="btn btn-primary" onclick="selectionSortRun()">▶ Run Sort</button>
+      <button class="btn btn-secondary" onclick="selectionSortStep()">Step →</button>
+      <button class="btn btn-warning" onclick="selectionSortReset()">Reset</button>
+    </div>
+    <div class="viz-area"><div class="bar-viz" id="sel-bars"></div></div>
+    <div class="before-after" style="margin-top:1rem">
+      <div class="ba-panel"><div class="ba-label before">Before</div><div class="array-viz" id="sel-before"></div></div>
+      <div class="ba-panel"><div class="ba-label after">After</div><div class="array-viz" id="sel-after"></div></div>
+    </div>
+    <div class="iteration-steps" id="sel-steps"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ MERGE SORT ═══ -->
+<div id="sort-merge" class="section">
+  <div class="section-title">Merge Sort</div>
+  <div class="section-desc">Divide and conquer. Split array in half recursively, then merge sorted halves. O(n log n) guaranteed.</div>
+
+  <div class="card">
+    <div class="card-title">Interactive Sort</div>
+    <div class="controls">
+      <input type="text" id="mrg-input" value="8,3,5,1,7,2,9,4">
+      <button class="btn btn-primary" onclick="mergeSortRun()">▶ Run Sort</button>
+      <button class="btn btn-secondary" onclick="mergeSortStep()">Step →</button>
+      <button class="btn btn-warning" onclick="mergeSortReset()">Reset</button>
+    </div>
+    <div class="viz-area"><div class="bar-viz" id="mrg-bars"></div></div>
+    <div class="before-after" style="margin-top:1rem">
+      <div class="ba-panel"><div class="ba-label before">Before</div><div class="array-viz" id="mrg-before"></div></div>
+      <div class="ba-panel"><div class="ba-label after">After</div><div class="array-viz" id="mrg-after"></div></div>
+    </div>
+    <div class="iteration-steps" id="mrg-steps"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ QUICK SORT ═══ -->
+<div id="sort-quick" class="section">
+  <div class="section-title">Quick Sort</div>
+  <div class="section-desc">Pick a pivot, partition array into &lt; pivot and &gt; pivot, recurse. O(n log n) avg, O(n²) worst.</div>
+
+  <div class="card">
+    <div class="card-title">Interactive Sort</div>
+    <div class="controls">
+      <input type="text" id="qck-input" value="9,3,7,1,5,8,2,6,4">
+      <button class="btn btn-primary" onclick="quickSortRun()">▶ Run Sort</button>
+      <button class="btn btn-secondary" onclick="quickSortStep()">Step →</button>
+      <button class="btn btn-warning" onclick="quickSortReset()">Reset</button>
+    </div>
+    <div class="viz-area"><div class="bar-viz" id="qck-bars"></div></div>
+    <div class="before-after" style="margin-top:1rem">
+      <div class="ba-panel"><div class="ba-label before">Before</div><div class="array-viz" id="qck-before"></div></div>
+      <div class="ba-panel"><div class="ba-label after">After</div><div class="array-viz" id="qck-after"></div></div>
+    </div>
+    <div class="iteration-steps" id="qck-steps"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ SHELL SORT ═══ -->
+<div id="sort-shell" class="section">
+  <div class="section-title">Shell Sort</div>
+  <div class="section-desc">Generalization of insertion sort. Compares elements at larger gaps first, reducing gap each pass.</div>
+
+  <div class="card">
+    <div class="card-title">Interactive Sort</div>
+    <div class="controls">
+      <input type="text" id="shl-input" value="8,1,6,3,9,2,7,4,5">
+      <button class="btn btn-primary" onclick="shellSortRun()">▶ Run Sort</button>
+      <button class="btn btn-secondary" onclick="shellSortStep()">Step →</button>
+      <button class="btn btn-warning" onclick="shellSortReset()">Reset</button>
+    </div>
+    <div class="viz-area"><div class="bar-viz" id="shl-bars"></div></div>
+    <div class="before-after" style="margin-top:1rem">
+      <div class="ba-panel"><div class="ba-label before">Before</div><div class="array-viz" id="shl-before"></div></div>
+      <div class="ba-panel"><div class="ba-label after">After</div><div class="array-viz" id="shl-after"></div></div>
+    </div>
+    <div class="iteration-steps" id="shl-steps"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ RADIX SORT ═══ -->
+<div id="sort-radix" class="section">
+  <div class="section-title">Radix Sort</div>
+  <div class="section-desc">Non-comparison sort. Groups by digits from least to most significant. O(nk) where k = digits.</div>
+
+  <div class="card">
+    <div class="card-title">Interactive Sort</div>
+    <div class="controls">
+      <input type="text" id="rdx-input" value="170,45,75,90,802,24,2,66">
+      <button class="btn btn-primary" onclick="radixSortRun()">▶ Run Sort</button>
+      <button class="btn btn-secondary" onclick="radixSortStep()">Step →</button>
+      <button class="btn btn-warning" onclick="radixSortReset()">Reset</button>
+    </div>
+    <div class="viz-area"><div class="bar-viz" id="rdx-bars"></div></div>
+    <div class="before-after" style="margin-top:1rem">
+      <div class="ba-panel"><div class="ba-label before">Before</div><div class="array-viz" id="rdx-before"></div></div>
+      <div class="ba-panel"><div class="ba-label after">After</div><div class="array-viz" id="rdx-after"></div></div>
+    </div>
+    <div class="iteration-steps" id="rdx-steps"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Bucket Distribution — Pass 1 (Units digit)</div>
+    <div id="radix-buckets-display"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ BUCKET SORT ═══ -->
+<div id="sort-bucket" class="section">
+  <div class="section-title">Bucket Sort</div>
+  <div class="section-desc">Distributes elements into buckets, sorts each bucket (insertion sort), then concatenates. O(n+k) avg.</div>
+
+  <div class="card">
+    <div class="card-title">Interactive Sort</div>
+    <div class="controls">
+      <input type="text" id="bkt-input" value="0.78,0.17,0.39,0.26,0.72,0.94,0.21,0.12,0.23,0.68">
+      <button class="btn btn-primary" onclick="bucketSortRun()">▶ Run Sort</button>
+      <button class="btn btn-secondary" onclick="bucketSortStep()">Step →</button>
+      <button class="btn btn-warning" onclick="bucketSortReset()">Reset</button>
+    </div>
+    <div class="viz-area" style="min-height:200px;" id="bkt-viz">
+      <div class="bar-viz" id="bkt-bars"></div>
+    </div>
+    <div class="before-after" style="margin-top:1rem">
+      <div class="ba-panel"><div class="ba-label before">Before</div><div class="array-viz" id="bkt-before" style="flex-wrap:wrap;"></div></div>
+      <div class="ba-panel"><div class="ba-label after">After</div><div class="array-viz" id="bkt-after" style="flex-wrap:wrap;"></div></div>
+    </div>
+    <div class="iteration-steps" id="bkt-steps"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ BINARY SEARCH ═══ -->
+<div id="search-binary" class="section">
+  <div class="section-title">Binary Search</div>
+  <div class="section-desc">Repeatedly halves the search space. Requires sorted array. O(log n) time.</div>
+
+  <div class="card">
+    <div class="card-title">Interactive Search</div>
+    <div class="controls">
+      <input type="text" id="bin-arr" value="2,5,8,12,16,23,38,45,67,80" placeholder="Sorted array">
+      <input type="number" id="bin-target" value="23" placeholder="Target">
+      <button class="btn btn-primary" onclick="binarySearchRun()">▶ Search</button>
+      <button class="btn btn-secondary" onclick="binarySearchStep()">Step →</button>
+      <button class="btn btn-warning" onclick="binarySearchReset()">Reset</button>
+    </div>
+    <div class="viz-area">
+      <div class="array-viz" id="bin-viz"></div>
+      <div style="margin-top:0.75rem;font-size:0.75rem;color:var(--text-muted)">
+        <span style="color:var(--accent2)">■</span> Low &nbsp;
+        <span style="color:var(--highlight)">■</span> Mid &nbsp;
+        <span style="color:var(--danger)">■</span> High &nbsp;
+        <span style="color:var(--success)">■</span> Found
+      </div>
+    </div>
+    <div class="iteration-steps" id="bin-steps"></div>
+    <div class="log" id="bin-log"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ FIBONACCI SEARCH ═══ -->
+<div id="search-fibonacci" class="section">
+  <div class="section-title">Fibonacci Search</div>
+  <div class="section-desc">Uses Fibonacci numbers to divide array. Like binary search but uses Fibonacci offsets instead of halving. O(log n).</div>
+
+  <div class="card">
+    <div class="card-title">Interactive Search</div>
+    <div class="controls">
+      <input type="text" id="fib-arr" value="10,22,35,40,45,50,80,82,85,90,100" placeholder="Sorted array">
+      <input type="number" id="fib-target" value="85" placeholder="Target">
+      <button class="btn btn-primary" onclick="fibSearchRun()">▶ Search</button>
+      <button class="btn btn-secondary" onclick="fibSearchStep()">Step →</button>
+      <button class="btn btn-warning" onclick="fibSearchReset()">Reset</button>
+    </div>
+    <div class="viz-area">
+      <div class="array-viz" id="fib-viz"></div>
+      <div style="margin-top:0.75rem;font-size:0.75rem;color:var(--text-muted)">
+        <span style="color:var(--accent)">■</span> Search range &nbsp;
+        <span style="color:var(--highlight)">■</span> Current mid &nbsp;
+        <span style="color:var(--success)">■</span> Found
+      </div>
+    </div>
+    <div class="card" style="margin-top:1rem;padding:1rem">
+      <div class="card-title">Fibonacci Sequence Used</div>
+      <div class="array-viz" id="fib-seq-viz"></div>
+    </div>
+    <div class="iteration-steps" id="fib-steps"></div>
+    <div class="log" id="fib-log"></div>
+  </div>
+</div>
+
+</div><!-- end container -->
+
+<script src="data.js">
+</script>
+</body>
+</html>
